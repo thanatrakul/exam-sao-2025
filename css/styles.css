@@ -36,7 +36,7 @@ body {
 /* ===== Layout พื้นฐาน ===== */
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px; /* ขยายกว้างขึ้นนิดหน่อย */
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -91,27 +91,6 @@ main {
   gap: .5rem;
 }
 
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .3rem;
-}
-
-.nav-links a {
-  font-size: .8rem;
-  text-decoration: none;
-  color: var(--muted);
-  border-radius: 999px;
-  padding: .2rem .7rem;
-  border: 1px solid transparent;
-}
-
-.nav-links a:hover {
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-color: var(--accent-soft);
-}
-
 /* ปุ่ม back และปุ่มทั่วไป */
 
 .btn {
@@ -154,24 +133,28 @@ main {
   border-color: var(--border);
 }
 
-/* ===== Card / Components ทั่วไป (ใช้ทุกหน้า) ===== */
+/* ===== Card / Components ทั่วไป ===== */
 
-.card {
+.card,
+.note-block,
+.menu-card {
   background: var(--bg-card);
   border-radius: .9rem;
   border: 1px solid var(--border);
   padding: 1rem 1.1rem;
-  margin-top: 1rem;
   box-shadow: var(--shadow-soft);
 }
 
+/* label เล็ก ๆ */
 .section-label {
   font-size: .75rem;
   font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
+  letter-spacing: .03em;
 }
 
+/* pill focus (ด้านขวาบนแบบเก่า) */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -235,6 +218,7 @@ main {
   margin-bottom: .2rem;
 }
 
+/* highlight วัน/ตัวเลขสำคัญ */
 .highlight {
   background: #fefcbf;
   padding: .1rem .3rem;
@@ -250,7 +234,7 @@ main {
   margin-top: .5rem;
 }
 
-/* Quiz block (ใช้ได้ทั้งหน้า notes และหน้าอื่น) */
+/* Quiz block */
 
 details.quiz {
   border-top: 1px dashed var(--border);
@@ -285,7 +269,7 @@ details.quiz li {
 
 .notes-layout {
   display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 1fr); /* TOC กว้างขึ้นหน่อย */
   gap: 1.25rem;
   margin-top: 1.25rem;
 }
@@ -361,22 +345,20 @@ details.quiz li {
   min-width: 0;
 }
 
+/* การ์ดแต่ละหัวข้อ */
+
 .note-block {
-  background: var(--bg-card);
-  border-radius: .9rem;
-  border: 1px solid var(--border);
-  padding: 1rem 1.1rem;
   margin-bottom: 1rem;
-  box-shadow: var(--shadow-soft);
-  scroll-margin-top: 5rem; /* ให้เลื่อนแล้วไม่ชน header */
+  scroll-margin-top: 5rem; /* เลื่อน anchor แล้วไม่ชน header */
 }
 
+/* header ของการ์ด (ซ้าย: title, ขวา: pill/meta) */
 .note-block-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: .5rem;
-  margin-bottom: .4rem;
+  gap: .75rem;
+  margin-bottom: .45rem;
 }
 
 .note-block-header-main {
@@ -396,10 +378,45 @@ details.quiz li {
   color: var(--muted);
 }
 
+/* กล่อง meta ด้านขวา */
+.note-block-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .3rem;
+}
+
+/* chip code + status (OV1 · แผนอ่าน) */
+.note-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .18rem .7rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  background: #edf2f7;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.note-chip-code {
+  font-weight: 600;
+}
+
+.note-chip-status {
+  padding: .05rem .45rem;
+  border-radius: 999px;
+  background: #e6fffa;
+  color: #276749;
+  font-weight: 600;
+}
+
+/* pill ร่วมกับ note-chip ได้ */
 .note-code-pill {
   display: inline-flex;
   align-items: center;
-  padding: .1rem .5rem;
+  padding: .1rem .55rem;
   border-radius: 999px;
   font-size: .75rem;
   background: #edf2f7;
@@ -446,39 +463,41 @@ details.quiz li {
   font-size: .86rem;
 }
 
-/* ===== ตัวอย่าง layout ทั่วไปสำหรับ index / exam-100 (generic) ===== */
+/* ===== Layout ทั่วไปสำหรับ index / exam-100 ===== */
 
 .hero {
   padding: 1.5rem 0 1.5rem;
 }
 
 .hero-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 .3rem;
+  margin: 0 0 .35rem;
   color: var(--accent-strong);
 }
 
 .hero-subtitle {
   font-size: .9rem;
   color: var(--muted);
-  max-width: 40rem;
+  max-width: 42rem;
+}
+
+/* ปุ่มใน hero หน้า index */
+.hero-actions {
+  margin-top: .8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
-.menu-card {
-  background: var(--bg-card);
-  border-radius: .9rem;
-  border: 1px solid var(--border);
-  padding: 1rem 1.1rem;
-  box-shadow: var(--shadow-soft);
-}
+/* menu-card reuse .menu-card (อยู่ใน card รวมด้านบน) */
 
 .menu-card-title {
   margin: 0 0 .3rem;
@@ -489,10 +508,15 @@ details.quiz li {
 .menu-card-desc {
   font-size: .86rem;
   color: var(--muted);
-  margin-bottom: .4rem;
+  margin-bottom: .6rem;
 }
 
-/* Responsive */
+.menu-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ===== Responsive ===== */
 
 @media (max-width: 880px) {
   .header-inner {
@@ -513,5 +537,14 @@ details.quiz li {
     position: static;
     max-height: none;
     margin-bottom: .75rem;
+  }
+
+  .note-block-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .note-block-header-right {
+    align-items: flex-start;
   }
 }
