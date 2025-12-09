@@ -2,97 +2,75 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <title>ข้อสอบ 100 ข้อ — อบจ. พยาบาลวิชาชีพ 2025</title>
+  <title>ข้อสอบเก็งสอบ อบจ. พยาบาลวิชาชีพ — 100 ข้อ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/exam-kit.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-title">
-    ชุดสรุป &amp; ข้อสอบ อบจ. พยาบาลวิชาชีพ 2025
+<header class="site-header">
+  <div class="container header-inner">
+    <div class="brand-block">
+      <h1 class="brand-title">ข้อสอบ 100 ข้อ — อบจ. พยาบาลวิชาชีพ</h1>
+      <p class="brand-subtitle">
+        แบบฝึกหัด 4 ตัวเลือก ตรวจคะแนนอัตโนมัติ + เฉลยพร้อมคำอธิบายหลังส่งข้อสอบ
+      </p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" type="button" onclick="window.location.href='index.html'">
+        <span class="icon">←</span>
+        <span>กลับหน้าหลัก</span>
+      </button>
+      <button class="btn" type="button" onclick="window.location.href='exam-notes.html'">
+        <span class="icon">📒</span>
+        <span>เปิดโน้ตรวม</span>
+      </button>
+    </div>
   </div>
-  <a href="index.html" class="topbar-back">
-    ← กลับหน้าแรก
-  </a>
 </header>
 
-<main>
-  <h1 class="page-title">ข้อสอบ 100 ข้อ — ภาค ก / ภาค ข / ภาค ค</h1>
-  <div class="page-subtitle">
-    ทำเหมือนข้อสอบจริง: เลือกคำตอบ → กด <b>ตรวจข้อสอบ</b> → ระบบเฉลย + สรุปคะแนนให้เลย
-    <br>แนะนำให้เปิดหน้า <b>สรุปเนื้อหา</b> (exam-notes.html) ประกอบเวลาทบทวน
-  </div>
+<main class="container">
+  <section class="hero">
+    <h2 class="hero-title">ทำข้อสอบเก็ง 100 ข้อ</h2>
+    <p class="hero-subtitle">
+      แนะนำให้ลองทำ <strong>รอบแรกแบบไม่ดูเฉลย</strong> แล้วค่อยดูคะแนนรวมและคำอธิบายเฉลย
+      จากนั้นจดโน้ตเพิ่มในหัวข้อที่ยังไม่แม่น
+    </p>
+  </section>
 
-  <div class="layout">
-    <section class="card">
-      <div class="card-header">
-        <div>
-          <div class="tag">
-            <span class="tag-dot"></span>
-            โหมดทำข้อสอบ (เลือกคำตอบ → กด Submit → เฉลย)
-          </div>
-          <div class="card-title">ข้อสอบชุดใหญ่ (สูงสุด 100 ข้อ)</div>
-        </div>
-        <div class="badge" id="question-count-badge">กำลังโหลดข้อสอบ...</div>
+  <!-- การ์ดควบคุมบนสุด -->
+  <section class="card" id="exam-controls">
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;">
+      <div>
+        <div class="section-label">โหมดทำข้อสอบ</div>
+        <h3 style="margin:.2rem 0 .4rem;font-size:1rem;color:var(--accent-strong);">
+          ข้อสอบ 100 ข้อจากไฟล์ <code>json/exam-100.json</code>
+        </h3>
+        <p class="note" style="font-size:.82rem;color:var(--muted);margin:0;">
+          * ข้อสอบทั้งหมดโหลดจากไฟล์ JSON — คุณสามารถแก้ไข/เพิ่มข้อสอบในไฟล์เดียว เพื่ออัปเดตชุดข้อสอบได้ง่าย ๆ
+        </p>
       </div>
-
-      <div class="controls">
-        <button class="btn btn-primary" id="submit-btn">
-          <span class="dot"></span>
-          ตรวจข้อสอบ / Submit
+      <div style="display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;">
+        <button class="btn btn-primary" type="button" id="btn-submit">
+          <span class="icon">✔</span>
+          <span>ส่งข้อสอบ & ดูเฉลย</span>
         </button>
-        <button class="btn btn-secondary" id="reset-btn">
-          รีเซ็ตคำตอบ
+        <button class="btn btn-ghost" type="button" id="btn-clear">
+          <span class="icon">↻</span>
+          <span>ล้างคำตอบทั้งหมด</span>
         </button>
       </div>
+    </div>
+    <div id="exam-summary" class="tip" style="margin-top:.5rem;display:none;"></div>
+  </section>
 
-      <div class="questions" id="questions-container">
-        <!-- exam-100.js จะ render ข้อสอบที่นี่ -->
-      </div>
-
-      <p class="hint">
-        เคล็ดลับ: ทำรอบแรก “ห้ามดูเฉลย” พอกดตรวจแล้วค่อยอ่านอธิบาย
-        รอบถัดไปลองจับเวลา เช่น 60–90 นาที ให้ใกล้เคียงสนามสอบจริง
-      </p>
-    </section>
-
-    <aside class="card">
-      <div class="card-header" style="margin-bottom:6px;">
-        <div>
-          <div class="tag">
-            <span class="tag-dot"></span>
-            ผลสอบ + เฉลยอย่างย่อ
-          </div>
-          <div class="card-title">สรุปคะแนน &amp; เฉลย</div>
-        </div>
-        <div class="badge">แสดงผลหลังจากกด Submit</div>
-      </div>
-
-      <div id="score-summary">
-        <div class="score-main">
-          ยังไม่ได้ตรวจข้อสอบ
-          <br><small style="color:var(--muted);">
-            เลือกคำตอบให้ครบที่สุดเท่าที่ทำได้ แล้วกด <b>“ตรวจข้อสอบ”</b>
-          </small>
-        </div>
-      </div>
-
-      <details id="answers-details" open>
-        <summary>ตารางเฉลยแบบย่อ (ข้อ–ตัวเลือกที่ถูก)</summary>
-        <div class="answer-table" id="answer-table"></div>
-      </details>
-
-      <details style="margin-top:8px;">
-        <summary>หมายเหตุสำหรับไฟล์ <code>exam-100.json</code></summary>
-        <div style="font-size:.78rem; margin-top:4px; color:var(--muted);">
-          ถ้าอยากเพิ่ม/แก้ข้อสอบ ให้ไปแก้ข้อมูลใน <code>exam-100.json</code> อย่างเดียว
-          โดยโครงสร้างแต่ละข้อจะมี
-          <code>id, part, cluster, topic, stem, choices, correct</code>
-        </div>
-      </details>
-    </aside>
-  </div>
+  <!-- พื้นที่แสดงข้อสอบทั้งหมด -->
+  <section id="exam-container" style="margin-top:1rem;">
+    <!-- exam-100.js จะเติมข้อสอบลงมานี่ -->
+    <div class="card" id="exam-loading">
+      กำลังโหลดข้อสอบจาก <code>json/exam-100.json</code> ...
+    </div>
+  </section>
 </main>
 
 <script src="js/exam-100.js" defer></script>

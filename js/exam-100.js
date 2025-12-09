@@ -1,285 +1,259 @@
 // js/exam-100.js
-// โหลดข้อสอบจาก exam-100.json แล้ว render + ตรวจข้อสอบ
+// ระบบทำข้อสอบ 100 ข้อ + ตรวจคะแนน + แสดงเฉลยจากไฟล์ json/exam-100.json
 
-let QUESTIONS = [];
-
-const letterMap = ["A", "B", "C", "D"];
-const thaiLabel = ["ก.", "ข.", "ค.", "ง."];
+const EXAM_JSON_PATH = "json/exam-100.json";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const questionsContainer = document.getElementById("questions-container");
-  const badge = document.getElementById("question-count-badge");
-  const submitBtn = document.getElementById("submit-btn");
-  const resetBtn = document.getElementById("reset-btn");
-  const scoreSummary = document.getElementById("score-summary");
-  const answerTable = document.getElementById("answer-table");
+  const container = document.getElementById("exam-container");
+  const btnSubmit = document.getElementById("btn-submit");
+  const btnClear = document.getElementById("btn-clear");
+  const summaryEl = document.getElementById("exam-summary");
 
-  async function loadQuestions() {
-    try {
-      const res = await fetch("json/exam-100.json", {
-        headers: { "Content-Type": "application/json" }
-      });
+  if (!container || !btnSubmit || !btnClear) {
+    console.error("DOM exam-100 ไม่ครบ");
+    return;
+  }
 
-      if (!res.ok) {
-        throw new Error("โหลดไฟล์ exam-100.json ไม่สำเร็จ");
+  let questions = [];
+
+  loadExam(container)
+    .then((qs) => {
+      questions = qs;
+      if (summaryEl) {
+        summaryEl.style.display = "none";
       }
-
-      const data = await res.json();
-      if (!Array.isArray(data)) {
-        throw new Error("โครงสร้าง JSON ต้องเป็น Array");
-      }
-      QUESTIONS = data;
-      renderQuestions();
-      renderAnswerTable();
-    } catch (err) {
+    })
+    .catch((err) => {
       console.error(err);
-      badge.textContent = "โหลดข้อสอบไม่สำเร็จ";
-      questionsContainer.innerHTML = `
-        <div class="error-box">
-          ไม่สามารถโหลดข้อสอบจาก <code>exam-100.json</code> ได้<br>
-          ตรวจสอบว่าไฟล์อยู่ในโฟลเดอร์เดียวกัน และเปิดผ่าน server (ไม่ใช่ file://)
+      container.innerHTML = `
+        <div class="notes-error">
+          ไม่สามารถโหลดไฟล์ <code>${EXAM_JSON_PATH}</code> ได้<br/>
+          กรุณาตรวจสอบว่าไฟล์อยู่ในโฟลเดอร์ <strong>json/</strong> และชื่อถูกต้องหรือไม่
         </div>
       `;
-    }
-  }
-
-  function renderQuestions() {
-    questionsContainer.innerHTML = "";
-
-    if (!QUESTIONS.length) {
-      badge.textContent = "ยังไม่มีข้อสอบใน JSON";
-      return;
-    }
-
-    badge.textContent = `จำนวนข้อสอบ: ${QUESTIONS.length} ข้อ`;
-
-    const byPart = {};
-    QUESTIONS.forEach((q) => {
-      if (!byPart[q.part]) byPart[q.part] = [];
-      byPart[q.part].push(q);
     });
 
-    const partOrder = ["ภาค ก", "ภาค ข", "ภาค ค"];
+  btnSubmit.addEventListener("click", () => {
+    if (!questions.length) return;
+    const result = evaluateExam(questions);
+    showSummary(result, summaryEl);
+  });
 
-    partOrder.forEach((part) => {
-      if (!byPart[part]) return;
+  btnClear.addEventListener("click", () => {
+    clearAnswers(questions);
+    if (summaryEl) {
+      summaryEl.style.display = "none";
+      summaryEl.innerHTML = "";
+    }
+  });
+});
 
-      const partBlock = document.createElement("div");
+// โหลด JSON แล้วสร้าง UI
+async function loadExam(container) {
+  const res = await fetch(EXAM_JSON_PATH, { cache: "no-cache" });
+  if (!res.ok) {
+    throw new Error("โหลดไฟล์ข้อสอบไม่สำเร็จ");
+  }
+  const data = await res.json();
+  if (!Array.isArray(data)) {
+    throw new Error("รูปแบบ JSON ไม่ถูกต้อง: ต้องเป็น array ของข้อสอบ");
+  }
 
-      const label = document.createElement("div");
-      label.className = "part-label";
-      const span = document.createElement("span");
-      span.textContent = part;
-      const small = document.createElement("small");
-      if (part === "ภาค ก") small.textContent = " กฎหมาย / ท้องถิ่น / การคลัง";
-      if (part === "ภาค ข") small.textContent = " วิชาชีพพยาบาล / สุขภาพ / ระบบสุขภาพ";
-      if (part === "ภาค ค") small.textContent = " ทัศนคติ / บุคลิกภาพ / สถานการณ์สมมติ";
-      label.appendChild(span);
-      label.appendChild(small);
-      partBlock.appendChild(label);
+  container.innerHTML = "";
 
-      byPart[part].forEach((q) => {
-        const qDiv = document.createElement("div");
-        qDiv.className = "question";
-        qDiv.dataset.qid = q.id;
+  data.forEach((q, index) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.id = q.id || `q-${index + 1}`;
+    card.dataset.questionIndex = index;
 
-        const header = document.createElement("div");
-        header.className = "question-header";
+    const header = document.createElement("div");
+    header.className = "card-header";
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "flex-start";
+    header.style.gap = ".5rem";
 
-        const number = document.createElement("div");
-        number.className = "q-number";
-        number.textContent = `ข้อ ${q.id}`;
-        header.appendChild(number);
+    const leftHeader = document.createElement("div");
+    const label = document.createElement("div");
+    label.className = "section-label";
+    label.textContent = q.section || "ข้อสอบ";
 
-        const meta = document.createElement("div");
-        meta.className = "q-meta";
-        meta.textContent = q.topic || q.cluster || "";
-        header.appendChild(meta);
+    const title = document.createElement("h3");
+    title.style.margin = ".2rem 0 .4rem";
+    title.style.fontSize = "1rem";
+    title.style.color = "var(--accent-strong)";
+    title.textContent = `ข้อที่ ${index + 1}`;
 
-        qDiv.appendChild(header);
+    const questionP = document.createElement("p");
+    questionP.style.margin = "0";
+    questionP.textContent = q.question || "";
 
-        const text = document.createElement("div");
-        text.className = "q-text";
-        text.textContent = q.stem;
-        qDiv.appendChild(text);
+    leftHeader.appendChild(label);
+    leftHeader.appendChild(title);
+    leftHeader.appendChild(questionP);
 
-        const optionsDiv = document.createElement("div");
-        optionsDiv.className = "options";
+    const rightHeader = document.createElement("div");
+    rightHeader.style.display = "flex";
+    rightHeader.style.flexDirection = "column";
+    rightHeader.style.alignItems = "flex-end";
+    rightHeader.style.fontSize = ".8rem";
+    rightHeader.style.color = "var(--muted)";
 
-        (q.choices || []).forEach((choice, idx) => {
-          const optLabel = document.createElement("label");
-          optLabel.className = "option";
+    const codeSpan = document.createElement("span");
+    codeSpan.className = "badge";
+    codeSpan.textContent = q.code || "";
+    rightHeader.appendChild(codeSpan);
 
-          const input = document.createElement("input");
-          input.type = "radio";
-          input.name = `q-${q.id}`;
-          input.value = letterMap[idx];
+    header.appendChild(leftHeader);
+    header.appendChild(rightHeader);
+    card.appendChild(header);
 
-          const labelSpan = document.createElement("span");
-          labelSpan.className = "opt-label";
-          labelSpan.textContent = thaiLabel[idx];
+    // ตัวเลือก
+    if (Array.isArray(q.choices)) {
+      const ul = document.createElement("ul");
+      ul.className = "deep-list";
 
-          const textSpan = document.createElement("span");
-          textSpan.textContent = choice;
+      q.choices.forEach((choiceText, cIndex) => {
+        const li = document.createElement("li");
+        const labelChoice = document.createElement("label");
+        labelChoice.style.display = "flex";
+        labelChoice.style.alignItems = "flex-start";
+        labelChoice.style.gap = ".4rem";
+        labelChoice.style.cursor = "pointer";
 
-          optLabel.appendChild(input);
-          optLabel.appendChild(labelSpan);
-          optLabel.appendChild(textSpan);
-          optionsDiv.appendChild(optLabel);
-        });
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = `q-${index}`;
+        input.value = String(cIndex);
 
-        qDiv.appendChild(optionsDiv);
+        const spanText = document.createElement("span");
+        spanText.textContent = choiceText;
 
-        const result = document.createElement("div");
-        result.className = "q-result";
-        result.id = `q-result-${q.id}`;
-        qDiv.appendChild(result);
-
-        partBlock.appendChild(qDiv);
+        labelChoice.appendChild(input);
+        labelChoice.appendChild(spanText);
+        li.appendChild(labelChoice);
+        ul.appendChild(li);
       });
 
-      questionsContainer.appendChild(partBlock);
-    });
-  }
+      card.appendChild(ul);
+    }
 
-  function renderAnswerTable() {
-    answerTable.innerHTML = "";
+    // พื้นที่เฉลย (ซ่อนก่อน)
+    const answerBox = document.createElement("div");
+    answerBox.className = "tip";
+    answerBox.style.marginTop = ".5rem";
+    answerBox.style.display = "none";
+    answerBox.dataset.role = "answer-box";
 
-    if (!QUESTIONS.length) return;
+    const answerText = document.createElement("div");
+    answerText.dataset.role = "answer-text";
+    answerText.style.fontSize = ".86rem";
+    answerBox.appendChild(answerText);
 
-    QUESTIONS.forEach((q) => {
-      const row = document.createElement("div");
-      row.className = "answer-row";
+    if (q.explanation) {
+      const explainP = document.createElement("p");
+      explainP.style.fontSize = ".82rem";
+      explainP.style.margin = ".3rem 0 0";
+      explainP.style.color = "var(--muted)";
+      explainP.textContent = q.explanation;
+      answerBox.appendChild(explainP);
+    }
 
-      const qSpan = document.createElement("span");
-      qSpan.className = "q";
-      qSpan.textContent = q.id;
+    card.appendChild(answerBox);
 
-      const aSpan = document.createElement("span");
-      aSpan.className = "a";
+    container.appendChild(card);
+  });
 
-      const idx = letterMap.indexOf(q.correct);
-      const label = idx >= 0 ? thaiLabel[idx].replace(".", "") : q.correct;
-      aSpan.textContent = label;
+  return data;
+}
 
-      row.appendChild(qSpan);
-      row.appendChild(aSpan);
-      answerTable.appendChild(row);
-    });
-  }
+// ตรวจคำตอบทั้งหมด
+function evaluateExam(questions) {
+  let correctCount = 0;
+  let total = questions.length;
 
-  function gradeExam() {
-    if (!QUESTIONS.length) return;
+  questions.forEach((q, index) => {
+    const card = document.querySelector(`article.card[data-question-index="${index}"]`);
+    if (!card) return;
 
-    let correctCount = 0;
-    let wrongCount = 0;
-    let unanswered = 0;
+    const selectedInput = card.querySelector(`input[name="q-${index}"]:checked`);
+    const selectedIndex = selectedInput ? parseInt(selectedInput.value, 10) : null;
 
-    const partStats = {};
+    const isCorrect =
+      selectedIndex !== null &&
+      typeof q.answerIndex === "number" &&
+      selectedIndex === q.answerIndex;
 
-    QUESTIONS.forEach((q) => {
-      if (!partStats[q.part]) partStats[q.part] = { total: 0, correct: 0 };
-      partStats[q.part].total += 1;
+    if (isCorrect) correctCount += 1;
 
-      const qDiv = document.querySelector(`.question[data-qid="${q.id}"]`);
-      const resultDiv = document.getElementById(`q-result-${q.id}`);
-      qDiv.classList.remove("correct", "incorrect", "unanswered");
+    // เคลียร์ state เดิม
+    card.style.borderColor = "var(--border)";
+    card.style.boxShadow = "var(--shadow-soft)";
 
-      const checked = document.querySelector(`input[name="q-${q.id}"]:checked`);
-      if (!checked) {
-        unanswered += 1;
-        qDiv.classList.add("unanswered");
-        resultDiv.style.display = "block";
-        const idxCorrect = letterMap.indexOf(q.correct);
-        const correctThai =
-          idxCorrect >= 0 ? thaiLabel[idxCorrect].replace(".", "") : q.correct;
-        resultDiv.className = "q-result incorrect";
-        resultDiv.innerHTML = `ยังไม่เลือกคำตอบ • <span class="key">เฉลย: ${correctThai}</span>`;
-        return;
-      }
+    // answer box
+    const answerBox = card.querySelector('[data-role="answer-box"]');
+    const answerText = card.querySelector('[data-role="answer-text"]');
 
-      const chosen = checked.value;
-      const idxChosen = letterMap.indexOf(chosen);
-      const idxCorrect = letterMap.indexOf(q.correct);
-      const chosenThai =
-        idxChosen >= 0 ? thaiLabel[idxChosen].replace(".", "") : chosen;
-      const correctThai =
-        idxCorrect >= 0 ? thaiLabel[idxCorrect].replace(".", "") : q.correct;
+    if (answerBox && answerText) {
+      answerBox.style.display = "block";
 
-      if (chosen === q.correct) {
-        correctCount += 1;
-        partStats[q.part].correct += 1;
-        qDiv.classList.add("correct");
-        resultDiv.style.display = "block";
-        resultDiv.className = "q-result correct";
-        resultDiv.innerHTML = `ตอบถูก • <span class="key">${correctThai}</span>`;
+      const correctChoiceText =
+        Array.isArray(q.choices) && typeof q.answerIndex === "number"
+          ? q.choices[q.answerIndex] ?? ""
+          : "";
+
+      if (isCorrect) {
+        card.style.borderColor = "var(--success)";
+        answerText.innerHTML = `
+          ✅ ตอบถูกต้อง — เฉลย: <strong>${correctChoiceText}</strong>
+        `;
       } else {
-        wrongCount += 1;
-        qDiv.classList.add("incorrect");
-        resultDiv.style.display = "block";
-        resultDiv.className = "q-result incorrect";
-        resultDiv.innerHTML = `ตอบผิด (ตอบ ${chosenThai}) • <span class="key">เฉลย: ${correctThai}</span>`;
+        card.style.borderColor = "var(--danger)";
+        answerText.innerHTML = `
+          ❌ ตอบยังไม่ถูก — เฉลยที่ถูกคือ <strong>${correctChoiceText}</strong>
+        `;
       }
+    }
+  });
+
+  return { correct: correctCount, total };
+}
+
+// แสดงสรุปคะแนนด้านบน
+function showSummary(result, boxEl) {
+  if (!boxEl) return;
+  const { correct, total } = result;
+  const percent = total ? Math.round((correct / total) * 100) : 0;
+
+  boxEl.style.display = "block";
+  boxEl.innerHTML = `
+    <strong>สรุปผลการทำข้อสอบ</strong><br />
+    ทำถูก <strong>${correct}</strong> จากทั้งหมด <strong>${total}</strong> ข้อ
+    (<strong>${percent}%</strong>)<br/>
+    <span style="font-size:.8rem;">
+      แนะนำให้ย้อนกลับไปอ่านโน้ตในหัวข้อที่ทำผิดบ่อย แล้วลองทำอีกรอบจนได้มากกว่า 80–90%
+    </span>
+  `;
+}
+
+// ล้างคำตอบทั้งหมด + ซ่อนเฉลย
+function clearAnswers(questions) {
+  questions.forEach((q, index) => {
+    const card = document.querySelector(`article.card[data-question-index="${index}"]`);
+    if (!card) return;
+
+    const inputs = card.querySelectorAll(`input[name="q-${index}"]`);
+    inputs.forEach((input) => {
+      input.checked = false;
     });
 
-    const total = QUESTIONS.length;
-    const scorePercent = total ? Math.round((correctCount / total) * 100) : 0;
-    const levelClass = scorePercent >= 80 ? "good" : "bad";
+    card.style.borderColor = "var(--border)";
+    card.style.boxShadow = "var(--shadow-soft)";
 
-    const scoreHtml = [];
-    scoreHtml.push(`
-      <div class="score-main">
-        ทำถูก <strong>${correctCount}</strong> ข้อ จากทั้งหมด <strong>${total}</strong> ข้อ
-        (<span class="${levelClass}">${scorePercent}%</span>)<br>
-        <small style="color:var(--muted);">
-          ผิด ${wrongCount} ข้อ · ยังไม่ได้ตอบ ${unanswered} ข้อ
-        </small>
-      </div>
-    `);
-
-    scoreHtml.push('<div class="score-parts">');
-    Object.keys(partStats).forEach((part) => {
-      const st = partStats[part];
-      const p = st.total ? Math.round((st.correct / st.total) * 100) : 0;
-      const cls = p >= 80 ? "ok" : "low";
-      scoreHtml.push(`
-        <div class="score-chip">
-          <span class="label">${part}</span>
-          <span class="value ${cls}">${st.correct}/${st.total} (${p}%)</span>
-        </div>
-      `);
-    });
-    scoreHtml.push("</div>");
-
-    scoreSummary.innerHTML = scoreHtml.join("");
-  }
-
-  function resetExam() {
-    const inputs = questionsContainer.querySelectorAll("input[type=radio]");
-    inputs.forEach((i) => {
-      i.checked = false;
-    });
-    const qDivs = questionsContainer.querySelectorAll(".question");
-    qDivs.forEach((div) => {
-      div.classList.remove("correct", "incorrect", "unanswered");
-    });
-    const results = questionsContainer.querySelectorAll(".q-result");
-    results.forEach((r) => {
-      r.style.display = "none";
-      r.textContent = "";
-    });
-    scoreSummary.innerHTML = `
-      <div class="score-main">
-        รีเซ็ตคำตอบแล้ว
-        <br><small style="color:var(--muted);">
-          ลองทำใหม่อีกรอบโดยไม่ดูเฉลย เพื่อเช็กว่าจำได้จริงแค่ไหน
-        </small>
-      </div>
-    `;
-  }
-
-  submitBtn.addEventListener("click", gradeExam);
-  resetBtn.addEventListener("click", resetExam);
-
-  loadQuestions();
-});
+    const answerBox = card.querySelector('[data-role="answer-box"]');
+    if (answerBox) {
+      answerBox.style.display = "none";
+    }
+  });
+}
