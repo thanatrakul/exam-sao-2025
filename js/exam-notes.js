@@ -1,5 +1,6 @@
 // js/exam-notes.js
 // โหลด json/exam-notes.json แล้วสร้าง TOC + note cards อัตโนมัติ
+// เวอร์ชันนี้ **ไม่แสดง GA/GB/GC/OV** ใน TOC และ pill แล้ว
 
 document.addEventListener("DOMContentLoaded", () => {
   const tocEl = document.getElementById("notes-toc");
@@ -33,14 +34,18 @@ async function loadNotes(tocEl, contentEl) {
   }
 }
 
+/**
+ * สร้าง card เนื้อหาแต่ละหัวข้อ
+ */
 function renderNotes(container, notes) {
   container.innerHTML = "";
 
   notes.forEach((note) => {
     const article = document.createElement("article");
     article.className = "note-block";
-    article.id = note.id || "";
+    article.id = note.id || ""; // ใช้ id จาก json เป็น anchor
 
+    // ----- header (ซ้าย: label+title+summary, ขวา: pill เล็ก ๆ) -----
     const header = document.createElement("div");
     header.className = "note-block-header";
 
@@ -61,24 +66,34 @@ function renderNotes(container, notes) {
 
     headerMain.appendChild(sectionLabel);
     headerMain.appendChild(title);
-    headerMain.appendChild(summary);
-
-    const codePill = document.createElement("span");
-    codePill.className = "note-code-pill";
-    codePill.textContent = note.code
-      ? `${note.code}${note.badge ? " · " + note.badge : ""}`
-      : note.badge || "";
+    if (summary.textContent.trim() !== "") {
+      headerMain.appendChild(summary);
+    }
 
     header.appendChild(headerMain);
-    header.appendChild(codePill);
+
+    // ----- pill ด้านขวา (ไม่ใช้ GA/GB/GC/OV) -----
+    // priority: note.pill -> note.badge -> note.pillText
+    const pillText =
+      (note.pill && String(note.pill).trim()) ||
+      (note.badge && String(note.badge).trim()) ||
+      (note.pillText && String(note.pillText).trim()) ||
+      "";
+
+    if (pillText) {
+      const pill = document.createElement("span");
+      pill.className = "note-code-pill";
+      pill.textContent = pillText; // ไม่ต่อ code ด้านหน้าแล้ว
+      header.appendChild(pill);
+    }
 
     article.appendChild(header);
 
-    // Focus list
+    // ----- Focus list -----
     if (Array.isArray(note.focus) && note.focus.length > 0) {
       const focusTitle = document.createElement("div");
       focusTitle.className = "note-focus-title";
-      focusTitle.textContent = "FOCUS ที่ควรเน้นจำ";
+      focusTitle.textContent = note.focusTitle || "FOCUS ที่ควรเน้นจำ";
 
       const ul = document.createElement("ul");
       ul.className = "note-focus-list";
@@ -93,7 +108,7 @@ function renderNotes(container, notes) {
       article.appendChild(ul);
     }
 
-    // Groups (หัวข้อย่อย)
+    // ----- กลุ่มหัวข้อย่อย (groups) -----
     if (Array.isArray(note.groups)) {
       note.groups.forEach((group) => {
         const groupTitle = document.createElement("div");
@@ -116,13 +131,13 @@ function renderNotes(container, notes) {
       });
     }
 
-    // Quiz
+    // ----- Mini-quiz -----
     if (Array.isArray(note.quiz) && note.quiz.length > 0) {
       const details = document.createElement("details");
       details.className = "quiz";
 
-      const summary = document.createElement("summary");
-      summary.textContent = note.quizTitle || "Mini-quiz หัวข้อนี้";
+      const summaryEl = document.createElement("summary");
+      summaryEl.textContent = note.quizTitle || "Mini-quiz หัวข้อนี้";
 
       const ol = document.createElement("ol");
       note.quiz.forEach((q) => {
@@ -131,7 +146,7 @@ function renderNotes(container, notes) {
         ol.appendChild(li);
       });
 
-      details.appendChild(summary);
+      details.appendChild(summaryEl);
       details.appendChild(ol);
 
       if (note.quizHint) {
@@ -148,8 +163,14 @@ function renderNotes(container, notes) {
   });
 }
 
+/**
+ * สร้าง TOC ด้านซ้าย
+ * - แบ่งตาม section (เช่น ภาพรวม, ภาค ก, ภาค ข, ภาค ค)
+ * - รายการย่อยเป็น bullet ธรรมดา
+ * - ไม่แสดงโค้ด OV/GA/GB/GC แล้ว ใช้ชื่อหัวข้ออ่านง่ายแทน
+ */
 function renderToc(tocContainer, notes) {
-  // เคลียร์ของเก่า ยกเว้น title แรก
+  // เก็บ title เดิมไว้ถ้ามี
   const titleEl = tocContainer.querySelector(".notes-toc-title");
   tocContainer.innerHTML = "";
   if (titleEl) tocContainer.appendChild(titleEl);
@@ -158,7 +179,7 @@ function renderToc(tocContainer, notes) {
   const sectionsMap = new Map();
 
   notes.forEach((n) => {
-    const key = n.section || "อื่น ๆ";
+    const key = n.section || "หัวข้ออื่น ๆ";
     if (!sectionsMap.has(key)) sectionsMap.set(key, []);
     sectionsMap.get(key).push(n);
   });
@@ -185,7 +206,14 @@ function renderToc(tocContainer, notes) {
       a.className = "notes-toc-link";
       a.href = `#${note.id}`;
       a.dataset.noteId = note.id || "";
-      a.textContent = note.code ? `${note.code} — ${note.title}` : note.title;
+
+      // label ใน TOC:
+      // priority: note.tocLabel -> note.title -> note.summary
+      a.textContent =
+        (note.tocLabel && String(note.tocLabel).trim()) ||
+        (note.title && String(note.title).trim()) ||
+        (note.summary && String(note.summary).trim()) ||
+        "หัวข้อ";
 
       a.addEventListener("click", (evt) => {
         evt.preventDefault();
@@ -205,7 +233,7 @@ function renderToc(tocContainer, notes) {
     tocContainer.appendChild(sectionBlock);
   });
 
-  // helper for scroll spy
+  // เก็บลิงก์ทั้งหมดไว้ให้ scroll spy ใช้
   window.__notesTocLinks = allTocLinks;
 }
 
@@ -221,8 +249,8 @@ function setActiveTocLink(activeLink) {
 }
 
 /**
- * Scroll spy แบบง่าย ๆ: ดูว่า note-block ไหนกำลังอยู่ใน viewport
- * แล้วทำให้ TOC item ของอันนั้นเป็น active
+ * Scroll spy แบบง่าย ๆ:
+ * ดูว่า note-block ไหนกำลังอยู่ใน viewport แล้วทำ TOC item ของอันนั้นเป็น active
  */
 function setupScrollSpy(notes) {
   const noteIds = notes.map((n) => n.id).filter(Boolean);
@@ -236,7 +264,6 @@ function setupScrollSpy(notes) {
 
   const observer = new IntersectionObserver(
     (entries) => {
-      // หาอันที่มองเห็นมากที่สุดในจังหวะนั้น
       let bestEntry = null;
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -258,7 +285,7 @@ function setupScrollSpy(notes) {
     {
       root: null,
       rootMargin: "0px 0px -60% 0px",
-      threshold: [0.2, 0.4, 0.6]
+      threshold: [0.2, 0.4, 0.6],
     }
   );
 

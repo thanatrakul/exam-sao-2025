@@ -1,4 +1,6 @@
-/* ===== CSS รวม (ใช้ร่วมทุกหน้า) ===== */
+/* =========================================
+   Global shared styles (ใช้ร่วมทุกหน้า)
+========================================= */
 
 :root {
   --bg: #f7fafc;
@@ -36,16 +38,18 @@ body {
 /* ===== Layout พื้นฐาน ===== */
 
 .container {
-  max-width: 1180px;          /* เดิม 1100 */
+  max-width: 1180px;      /* กว้างขึ้นนิดหน่อย ให้ content โล่ง */
   margin: 0 auto;
-  padding: 0 1.25rem;         /* เผื่อ space เพิ่มนิดหน่อย */
+  padding: 0 1.25rem;
 }
 
 main {
   padding: 1.25rem 0 2.5rem;
 }
 
-/* ===== Header หลัก (ใช้ทุกหน้าได้) ===== */
+/* =========================================
+   Header หลัก (ใช้ได้ทุกหน้า)
+========================================= */
 
 .site-header {
   position: sticky;
@@ -91,7 +95,31 @@ main {
   gap: .5rem;
 }
 
-/* ปุ่ม back และปุ่มทั่วไป */
+/* ถ้ามีลิงก์ nav เพิ่มทีหลัง */
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+}
+
+.nav-links a {
+  font-size: .8rem;
+  text-decoration: none;
+  color: var(--muted);
+  border-radius: 999px;
+  padding: .2rem .7rem;
+  border: 1px solid transparent;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+/* =========================================
+   ปุ่มต่าง ๆ
+========================================= */
 
 .btn {
   appearance: none;
@@ -133,7 +161,9 @@ main {
   border-color: var(--border);
 }
 
-/* ===== Card / Components ทั่วไป ===== */
+/* =========================================
+   Card / Components ทั่วไป
+========================================= */
 
 .card,
 .note-block,
@@ -145,7 +175,7 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
-/* label เล็ก ๆ */
+/* label เล็ก ๆ ด้านบน */
 .section-label {
   font-size: .75rem;
   font-weight: 600;
@@ -154,7 +184,7 @@ main {
   letter-spacing: .03em;
 }
 
-/* pill focus (ด้านขวาบนแบบเก่า) */
+/* pill focus (ด้านขวาบน) */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -172,6 +202,7 @@ main {
   opacity: .8;
 }
 
+/* badge เล็ก ๆ */
 .badge {
   display: inline-block;
   font-size: .75rem;
@@ -225,6 +256,7 @@ main {
   border-radius: .3rem;
 }
 
+/* กล่อง tip */
 .tip {
   font-size: .85rem;
   padding: .5rem .7rem;
@@ -234,7 +266,9 @@ main {
   margin-top: .5rem;
 }
 
-/* Quiz block */
+/* =========================================
+   Quiz block
+========================================= */
 
 details.quiz {
   border-top: 1px dashed var(--border);
@@ -265,20 +299,22 @@ details.quiz li {
   margin-top: .2rem;
 }
 
-/* ===== Layout เฉพาะหน้า exam-notes.html ===== */
+/* =========================================
+   exam-notes.html layout (2 คอลัมน์)
+========================================= */
 
 .notes-layout {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);  /* เดิม ~270px */
+  grid-template-columns: 310px minmax(0, 1fr);  /* ซ้ายกว้างขึ้น */
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
-/* TOC Sidebar */
+/* ----- TOC Sidebar ----- */
 
 .notes-toc {
   position: sticky;
-  top: 4.1rem; /* ให้ไม่ชน header */
+  top: 4.1rem; /* ไม่ชน header */
   align-self: flex-start;
   background: #f8fafc;
   border-radius: .9rem;
@@ -307,6 +343,7 @@ details.quiz li {
   margin-bottom: .2rem;
 }
 
+/* list + bullet style */
 .notes-toc-list {
   list-style: none;
   margin: 0;
@@ -318,28 +355,53 @@ details.quiz li {
   margin-bottom: .15rem;
 }
 
+/* ลิงก์ TOC เป็น bullet + highlight เบา ๆ */
 .notes-toc-link {
+  position: relative;
   display: block;
-  padding: .15rem .4rem;
+  padding: .18rem .5rem .18rem 1.25rem; /* เผื่อพื้นที่ bullet ทางซ้าย */
   border-radius: .4rem;
   text-decoration: none;
   color: var(--muted);
   border: 1px solid transparent;
   cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+/* จุด bullet ด้านหน้า */
+.notes-toc-link::before {
+  content: "•";
+  position: absolute;
+  left: .4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: .7rem;
+  color: var(--muted);
 }
 
 .notes-toc-link:hover {
   background: var(--accent-soft);
   color: var(--accent-strong);
+  border-color: var(--accent-soft);
 }
 
+.notes-toc-link:hover::before {
+  color: var(--accent-strong);
+}
+
+/* ขณะ active (scroll spy / click) */
 .notes-toc-link.active {
   background: var(--accent);
   color: #ffffff;
   border-color: var(--accent);
+  font-weight: 600;
 }
 
-/* Content ฝั่งขวา */
+.notes-toc-link.active::before {
+  color: #ffffff;
+}
+
+/* ----- Content ฝั่งขวา ----- */
 
 .notes-content {
   min-width: 0;
@@ -356,7 +418,7 @@ details.quiz li {
 .note-block-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: .75rem;
   margin-bottom: .45rem;
 }
@@ -378,7 +440,7 @@ details.quiz li {
   color: var(--muted);
 }
 
-/* กล่อง meta ด้านขวา */
+/* กล่อง meta ด้านขวา (ถ้าใช้แบบสองบรรทัด) */
 .note-block-header-right {
   display: flex;
   flex-direction: column;
@@ -386,41 +448,19 @@ details.quiz li {
   gap: .3rem;
 }
 
-/* chip code + status (OV1 · แผนอ่าน) */
-.note-chip {
+/* pill สั้น ๆ — แสดงเฉพาะ text จาก badge เช่น “อ่านก่อนเริ่ม” */
+.note-code-pill {
   display: inline-flex;
   align-items: center;
-  gap: .45rem;
-  padding: .18rem .7rem;
+  justify-content: center;
+  padding: .15rem .7rem;
   border-radius: 999px;
   font-size: .78rem;
   background: #edf2f7;
   color: var(--muted);
   border: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-.note-chip-code {
-  font-weight: 600;
-}
-
-.note-chip-status {
-  padding: .05rem .45rem;
-  border-radius: 999px;
-  background: #e6fffa;
-  color: #276749;
-  font-weight: 600;
-}
-
-/* pill ร่วมกับ note-chip ได้ */
-.note-code-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: .1rem .55rem;
-  border-radius: 999px;
-  font-size: .75rem;
-  background: #edf2f7;
-  color: var(--muted);
+  white-space: nowrap;       /* กันข้อความตกบรรทัดบนจอใหญ่ */
+  line-height: 1.2;
 }
 
 /* Focus & กลุ่มหัวข้อใน note */
@@ -463,7 +503,9 @@ details.quiz li {
   font-size: .86rem;
 }
 
-/* ===== Layout ทั่วไปสำหรับ index / exam-100 ===== */
+/* =========================================
+   Layout ทั่วไปสำหรับ index.html / exam-100
+========================================= */
 
 .hero {
   padding: 1.5rem 0 1.5rem;
@@ -497,7 +539,7 @@ details.quiz li {
   margin-top: 1.2rem;
 }
 
-/* menu-card reuse .menu-card (อยู่ใน card รวมด้านบน) */
+/* menu-card reuse .menu-card (ข้างบน) */
 
 .menu-card-title {
   margin: 0 0 .3rem;
@@ -516,7 +558,9 @@ details.quiz li {
   justify-content: flex-end;
 }
 
-/* ===== Responsive ===== */
+/* =========================================
+   Responsive ทั่วไป
+========================================= */
 
 @media (max-width: 880px) {
   .header-inner {
@@ -547,9 +591,17 @@ details.quiz li {
   .note-block-header-right {
     align-items: flex-start;
   }
+
+  /* pill ยอมขึ้นบรรทัดได้บนจอเล็ก */
+  .note-code-pill {
+    white-space: normal;
+    text-align: right;
+  }
 }
 
-/* ===== Index page (หน้าแรก) ===== */
+/* =========================================
+   Index page (หน้าแรก)
+========================================= */
 
 .index-main {
   padding: 2.5rem 0 3rem;
@@ -628,7 +680,7 @@ details.quiz li {
   color: #475569;
 }
 
-/* split panes */
+/* split panes (อ่านโน้ต / ทำข้อสอบ ให้สูงเท่ากัน) */
 
 .index-split {
   display: grid;
@@ -643,9 +695,8 @@ details.quiz li {
   border: 1px solid var(--border);
   padding: 1rem 1.1rem .9rem;
 
-  /* เพิ่มสองบรรทัดนี้ให้กลายเป็น card ที่ยืดตัวเองได้ */
   display: flex;
-  flex-direction: column;
+  flex-direction: column;   /* ทำให้ footer ดันลงล่าง */
 }
 
 .index-pane-header {
@@ -700,16 +751,14 @@ details.quiz li {
   margin-bottom: .1rem;
 }
 
+/* footer ด้านล่างของ each pane – ปุ่มจะอยู่ระดับเดียวกัน */
 .index-pane-footer {
-  /* เดิมมีแค่สองบรรทัดล่าง */
   display: flex;
   justify-content: flex-end;
-
-  /* เพิ่มบรรทัดนี้ เพื่อดัน footer ลงด้านล่างสุดของ card */
-  margin-top: auto;
+  margin-top: auto;   /* key: ดัน footer ลงล่างสุด */
 }
 
-/* footer ใต้การ์ด */
+/* footer ใต้การ์ดหลัก */
 
 .index-card-footer {
   margin-top: 1.1rem;
