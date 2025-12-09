@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>สรุปเนื้อหาเก็งสอบ — อบจ. พยาบาลวิชาชีพ 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/exam-kit.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-title">
+    สรุปเนื้อหาเก็งสอบ อบจ. พยาบาลวิชาชีพ 2025
+  </div>
+  <a href="index.html" class="topbar-back">
+    ← กลับหน้าแรก
+  </a>
+</header>
+
+<main>
+  <h1 class="page-title">สรุปเนื้อหาเก็งสอบ — ภาค ก / ภาค ข / ภาค ค</h1>
+  <div class="page-subtitle">
+    หน้านี้ใช้สำหรับอ่านเนื้อหาแบบสรุปเข้ม แยกตามหัวข้อ GA / GB / GC
+    แนะนำให้อ่านให้ครบก่อน แล้วค่อยไปทำข้อสอบ 100 ข้อ
+  </div>
+
+  <div class="layout">
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            สรุปเนื้อหาตามหัวข้อ GA / GB / GC
+          </div>
+          <div class="card-title">เนื้อหาเก็งสอบรวม</div>
+        </div>
+        <div class="badge" id="notes-count-badge">กำลังโหลดเนื้อหา...</div>
+      </div>
+
+      <div class="notes" id="notes-container">
+        <!-- exam-notes.js จะ render เนื้อหาจาก exam-notes.json -->
+      </div>
+
+      <p class="hint">
+        เคล็ดลับ: อ่านทีละหัวข้อให้จบ ตั้งคำถาม/ทำ mini-quiz ของตัวเอง
+        แล้วค่อยข้ามไปหัวข้อถัดไป จะช่วยให้จำได้ดีขึ้น
+      </p>
+    </section>
+
+    <aside class="card">
+      <div class="card-header">
+        <div>
+          <div class="tag">
+            <span class="tag-dot"></span>
+            ภาพรวมหัวข้อ / TOC
+          </div>
+          <div class="card-title">สารบัญหัวข้ออ่าน</div>
+        </div>
+        <div class="badge">คลิกเพื่อเลื่อนข้ามไปหัวข้อที่ต้องการ</div>
+      </div>
+
+      <div class="toc" id="toc-container">
+        <!-- exam-notes.js จะเติม TOC -->
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script src="js/exam-notes.js" defer></script>
+</body>
+</html>

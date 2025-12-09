@@ -2,323 +2,76 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <title>สรุปเนื้อหาเก็งสอบ อบจ. พยาบาลวิชาชีพ 2025</title>
+  <title>ชุดสรุป & ข้อสอบ — อบจ. พยาบาลวิชาชีพ 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #f7fafc;
-      --bg-card: #ffffff;
-      --border: #e2e8f0;
-      --accent: #2b6cb0;
-      --accent-soft: #ebf4ff;
-      --accent-strong: #2c5282;
-      --text: #1a202c;
-      --muted: #4a5568;
-      --shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
-      --radius-lg: 18px;
-      --radius-full: 999px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #e0f2fe 0, #f1f5f9 45%, #f8fafc 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .shell {
-      width: 100%;
-      max-width: 960px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(18px);
-      border-radius: 28px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      box-shadow: var(--shadow);
-      padding: 28px 26px 24px;
-    }
-
-    @media (min-width: 768px) {
-      .card {
-        padding: 32px 32px 26px;
-      }
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      background: rgba(37, 99, 235, 0.06);
-      border: 1px solid rgba(129, 140, 248, 0.35);
-      color: #1d4ed8;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
-    }
-
-    .title {
-      font-size: clamp(24px, 3vw, 30px);
-      line-height: 1.3;
-      margin-bottom: 6px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #0f172a;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
-    .tag {
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #dbeafe;
-    }
-
-    .grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    @media (min-width: 640px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    .option {
-      position: relative;
-      background: linear-gradient(135deg, #ffffff, #f8fafc);
-      border-radius: 20px;
-      padding: 18px 18px 16px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      overflow: hidden;
-      transition:
-        transform 0.16s ease,
-        box-shadow 0.16s ease,
-        border-color 0.16s ease,
-        background 0.16s ease;
-    }
-
-    .option::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      pointer-events: none;
-    }
-
-    .option:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.12);
-      border-color: #bfdbfe;
-      background: linear-gradient(135deg, #ffffff, #eff6ff);
-    }
-
-    .option:hover::after {
-      opacity: 1;
-    }
-
-    .option-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: #2563eb;
-      color: #eff6ff;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
-    .option-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #0f172a;
-    }
-
-    .option-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    .meta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 12px;
-      color: #6b7280;
-    }
-
-    .meta-left {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .meta-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #4f46e5;
-    }
-
-    .chip {
-      padding: 3px 9px;
-      border-radius: var(--radius-full);
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-    }
-
-    .footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 22px;
-      padding-top: 14px;
-      border-top: 1px dashed #e2e8f0;
-      font-size: 11px;
-      color: #94a3b8;
-    }
-
-    .footer strong {
-      color: #64748b;
-    }
-
-    .ks-badge {
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(248, 250, 252, 0.8);
-    }
-  </style>
+  <link rel="stylesheet" href="css/exam-kit.css">
 </head>
 <body>
   <main class="shell">
-    <section class="card" aria-label="สรุปเนื้อหาเก็งสอบ">
-      <div class="badge">
-        <span class="badge-dot"></span>
+    <section class="index-card-main" aria-label="exam-kit">
+      <div class="index-badge">
+        <span class="index-badge-dot"></span>
         Exam Toolkit · 2025
       </div>
 
-      <h1 class="title">สรุปเนื้อหาเก็งสอบ อบจ. พยาบาลวิชาชีพ</h1>
-      <p class="subtitle">
-        หน้ารวมสำหรับอ่านเนื้อหา และทำข้อสอบฝึกหัด แนะนำให้
-        <strong>อ่านเนื้อหา</strong> ให้ครบก่อน แล้วค่อยลองทำ
-        <strong>ข้อสอบ 100 ข้อ</strong> เพื่อประเมินตัวเองและจับจุดที่ต้องทบทวนซ้ำ
+      <h1 class="index-title">ชุดสรุป &amp; ข้อสอบ อบจ. พยาบาลวิชาชีพ</h1>
+      <p class="index-subtitle">
+        เลือกโหมดที่ต้องการ:
+        <strong>อ่านเนื้อหา</strong> เพื่อปูพื้นให้ครบ
+        หรือ <strong>ทำข้อสอบ 100 ข้อ</strong> เพื่อประเมินตัวเองแบบสนามสอบจริง
       </p>
 
-      <div class="tags">
-        <span class="tag">ภาค ก / ข / ค</span>
-        <span class="tag">สรุปอ่านง่าย</span>
-        <span class="tag">ฝึกทำข้อสอบจริง</span>
+      <div class="index-tags">
+        <span class="index-tag">ภาค ก / ข / ค</span>
+        <span class="index-tag">สรุปอ่านง่าย</span>
+        <span class="index-tag">จำลองข้อสอบจริง</span>
       </div>
 
-      <div class="grid" aria-label="ตัวเลือกหน้าสำหรับเปิด">
-        <!-- เนื้อหา -->
-        <a class="option" href="exam-notes-content.html">
-          <div class="option-header">
-            <div class="pill">อ่าน</div>
-            <div>
-              <div class="option-title">อ่านเนื้อหา &mdash; สรุปเข้ม</div>
-            </div>
+      <div class="index-grid">
+        <a class="index-option" href="exam-notes.html">
+          <div class="index-option-header">
+            <div class="index-pill">อ่าน</div>
+            <div class="index-option-title">อ่านเนื้อหา — สรุปเข้มทุกภาค</div>
           </div>
-          <p class="option-sub">
-            รวมสรุปสาระสำคัญที่ออกสอบบ่อย แยกหัวข้อให้แล้ว
-            ใช้เป็นตัวหลักในการทบทวนก่อนสอบ หรืออ่านทวนเร็ว ๆ ก่อนทำข้อสอบ
+          <p class="index-option-sub">
+            รวมหัวข้อสำคัญที่ออกสอบบ่อย แยกเป็น ภาค ก / ภาค ข / ภาค ค
+            ใช้เป็นฐานก่อนทำข้อสอบชุดใหญ่
           </p>
-          <div class="meta-row">
-            <div class="meta-left">
-              <span class="meta-dot"></span>
-              <span>เหมาะสำหรับอ่านต่อเนื่อง / ไฮไลต์เพิ่มเองได้</span>
+          <div class="index-meta-row">
+            <div class="index-meta-left">
+              <span class="index-meta-dot"></span>
+              <span>เหมาะสำหรับติว + ทำไฮไลต์เอง</span>
             </div>
-            <span class="chip">เริ่มจากหน้านี้</span>
+            <span class="index-chip">แนะนำเริ่มจากหน้านี้</span>
           </div>
         </a>
 
-        <!-- ข้อสอบ 100 ข้อ -->
-        <a class="option" href="exam-100.html">
-          <div class="option-header">
-            <div class="pill">สอบ</div>
-            <div>
-              <div class="option-title">ข้อสอบ 100 ข้อ (ฝึกทำ)</div>
-            </div>
+        <a class="index-option" href="exam-100.html">
+          <div class="index-option-header">
+            <div class="index-pill">สอบ</div>
+            <div class="index-option-title">ข้อสอบ 100 ข้อ — โหมดฝึกสอบ</div>
           </div>
-          <p class="option-sub">
-            ข้อสอบจำลอง 100 ข้อ สำหรับฝึกจับเวลาและประเมินความเข้าใจ
-            ทำรอบแรกเพื่อดูจุดอ่อน แล้วกลับไปอ่านเนื้อหาตามหัวข้อที่ยังไม่แม่น
+          <p class="index-option-sub">
+            แบบฝึกหัด 100 ข้อ แบ่งตาม ภาค ก / ภาค ข / ภาค ค
+            เลือกคำตอบ → กดตรวจ → ระบบเฉลย + สรุปคะแนน
           </p>
-          <div class="meta-row">
-            <div class="meta-left">
-              <span class="meta-dot"></span>
-              <span>ใช้ทดสอบตัวเองก่อนวันจริง</span>
+          <div class="index-meta-row">
+            <div class="index-meta-left">
+              <span class="index-meta-dot"></span>
+              <span>ใช้ประเมินความพร้อมก่อนสอบจริง</span>
             </div>
-            <span class="chip">โหมดฝึกสอบ</span>
+            <span class="index-chip">โหมดทำข้อสอบ</span>
           </div>
         </a>
       </div>
 
-      <footer class="footer">
-        <div>
-          <strong>ข้อแนะนำ:</strong> อ่าน &rarr; ทำข้อสอบ &rarr; กลับมาทบทวนจุดที่ผิด
-        </div>
-        <div class="ks-badge">Exam kit · ใช้ส่วนตัว/อ่านทบทวน</div>
-      </footer>
+      <div class="index-footer">
+        <span>
+          <strong>Workflow แนะนำ:</strong>
+          อ่านเนื้อหา → ทำข้อสอบ → กลับไปทบทวนจุดที่ผิด
+        </span>
+        <span class="index-ks-badge">Exam kit · ใช้ส่วนตัว / ติวสอบ</span>
+      </div>
     </section>
   </main>
 </body>
