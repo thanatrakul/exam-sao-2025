@@ -1,3 +1,5 @@
+/* css/styles.css */
+
 /* =========================================
    Global shared styles (ใช้ร่วมทุกหน้า)
 ========================================= */
@@ -38,7 +40,7 @@ body {
 /* ===== Layout พื้นฐาน ===== */
 
 .container {
-  max-width: 1180px;      /* กว้างขึ้นนิดหน่อย ให้ content โล่ง */
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 1.25rem;
 }
@@ -267,7 +269,7 @@ main {
 }
 
 /* =========================================
-   Quiz block
+   Quiz block (ใช้ใน notes)
 ========================================= */
 
 details.quiz {
@@ -305,7 +307,7 @@ details.quiz li {
 
 .notes-layout {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);  /* ซ้ายกว้างขึ้น */
+  grid-template-columns: 310px minmax(0, 1fr);
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
@@ -314,7 +316,7 @@ details.quiz li {
 
 .notes-toc {
   position: sticky;
-  top: 4.1rem; /* ไม่ชน header */
+  top: 4.1rem;
   align-self: flex-start;
   background: #f8fafc;
   border-radius: .9rem;
@@ -359,7 +361,7 @@ details.quiz li {
 .notes-toc-link {
   position: relative;
   display: block;
-  padding: .18rem .5rem .18rem 1.25rem; /* เผื่อพื้นที่ bullet ทางซ้าย */
+  padding: .18rem .5rem .18rem 1.25rem;
   border-radius: .4rem;
   text-decoration: none;
   color: var(--muted);
@@ -389,7 +391,7 @@ details.quiz li {
   color: var(--accent-strong);
 }
 
-/* ขณะ active (scroll spy / click) */
+/* ขณะ active */
 .notes-toc-link.active {
   background: var(--accent);
   color: #ffffff;
@@ -411,10 +413,10 @@ details.quiz li {
 
 .note-block {
   margin-bottom: 1rem;
-  scroll-margin-top: 5rem; /* เลื่อน anchor แล้วไม่ชน header */
+  scroll-margin-top: 5rem;
 }
 
-/* header ของการ์ด (ซ้าย: title, ขวา: pill/meta) */
+/* header การ์ด note */
 .note-block-header {
   display: flex;
   justify-content: space-between;
@@ -440,7 +442,7 @@ details.quiz li {
   color: var(--muted);
 }
 
-/* กล่อง meta ด้านขวา (ถ้าใช้แบบสองบรรทัด) */
+/* meta ด้านขวา */
 .note-block-header-right {
   display: flex;
   flex-direction: column;
@@ -448,7 +450,7 @@ details.quiz li {
   gap: .3rem;
 }
 
-/* pill สั้น ๆ — แสดงเฉพาะ text จาก badge เช่น “อ่านก่อนเริ่ม” */
+/* pill สั้น */
 .note-code-pill {
   display: inline-flex;
   align-items: center;
@@ -459,11 +461,11 @@ details.quiz li {
   background: #edf2f7;
   color: var(--muted);
   border: 1px solid var(--border);
-  white-space: nowrap;       /* กันข้อความตกบรรทัดบนจอใหญ่ */
+  white-space: nowrap;
   line-height: 1.2;
 }
 
-/* Focus & กลุ่มหัวข้อใน note */
+/* Focus & groups */
 
 .note-focus-title {
   font-size: .82rem;
@@ -491,7 +493,7 @@ details.quiz li {
   color: var(--accent-strong);
 }
 
-/* Panel แจ้งข้อผิดพลาดโหลด json */
+/* Panel error */
 
 .notes-error {
   margin-top: 1rem;
@@ -504,7 +506,7 @@ details.quiz li {
 }
 
 /* =========================================
-   Layout ทั่วไปสำหรับ index.html / exam-100
+   Layout ทั่วไปสำหรับ index / exam-100
 ========================================= */
 
 .hero {
@@ -539,7 +541,7 @@ details.quiz li {
   margin-top: 1.2rem;
 }
 
-/* menu-card reuse .menu-card (ข้างบน) */
+/* menu-card */
 
 .menu-card-title {
   margin: 0 0 .3rem;
@@ -592,7 +594,6 @@ details.quiz li {
     align-items: flex-start;
   }
 
-  /* pill ยอมขึ้นบรรทัดได้บนจอเล็ก */
   .note-code-pill {
     white-space: normal;
     text-align: right;
@@ -680,7 +681,7 @@ details.quiz li {
   color: #475569;
 }
 
-/* split panes (อ่านโน้ต / ทำข้อสอบ ให้สูงเท่ากัน) */
+/* split panes */
 
 .index-split {
   display: grid;
@@ -694,9 +695,8 @@ details.quiz li {
   border-radius: 1rem;
   border: 1px solid var(--border);
   padding: 1rem 1.1rem .9rem;
-
   display: flex;
-  flex-direction: column;   /* ทำให้ footer ดันลงล่าง */
+  flex-direction: column;
 }
 
 .index-pane-header {
@@ -751,11 +751,12 @@ details.quiz li {
   margin-bottom: .1rem;
 }
 
-/* footer ด้านล่างของ each pane – ปุ่มจะอยู่ระดับเดียวกัน */
+/* footer ของ pane */
+
 .index-pane-footer {
   display: flex;
   justify-content: flex-end;
-  margin-top: auto;   /* key: ดัน footer ลงล่างสุด */
+  margin-top: auto;
 }
 
 /* footer ใต้การ์ดหลัก */
@@ -799,5 +800,574 @@ details.quiz li {
 
   .index-main {
     padding-top: 1.6rem;
+  }
+}
+
+/* =========================================
+   exam-100 layout (simulation look & feel)
+========================================= */
+
+/* ระยะห่างหลักของหน้า – เพิ่ม padding ล่างกัน sticky บัง */
+.exam-main {
+  padding: 1.5rem 0 5.2rem;
+}
+
+/* layout 2 คอลัมน์: ซ้ายข้อสอบ / ขวาสรุปผล */
+.exam-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.1fr);
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.exam-main-col,
+.exam-sidebar-col {
+  min-width: 0;
+}
+
+/* การ์ด control ด้านบนของฝั่งซ้าย */
+#exam-controls {
+  margin-bottom: 1rem;
+}
+
+/* container ของข้อสอบทั้งหมด + gap ระหว่างข้อ */
+#exam-container {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* การ์ดข้อสอบแต่ละข้อ */
+.exam-question-card {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  border-radius: 1.1rem;
+}
+
+/* header ของแต่ละข้อ */
+.exam-question-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.exam-question-title {
+  margin: 0.1rem 0 0.35rem;
+  font-size: 0.98rem;
+  color: var(--accent-strong);
+}
+
+.exam-question-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* list ตัวเลือก (ตัด bullet และระยะ) */
+.exam-question-card .deep-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.2rem;
+  margin-bottom: 0;
+}
+
+.exam-question-card .deep-list li {
+  margin-bottom: .25rem;
+}
+
+/* progress bar หลักด้านบน */
+
+.exam-progress-wrap {
+  margin-top: 0.7rem;
+}
+
+.exam-progress-bar {
+  position: relative;
+  width: 100%;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: #edf2f7;
+  overflow: hidden;
+}
+
+.exam-progress-bar.small {
+  height: 0.5rem;
+}
+
+.exam-progress-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #4299e1, #2b6cb0);
+  transition: transform 0.25s ease-out;
+}
+
+.exam-progress-meta,
+.exam-progress-text {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* sidebar summary ด้านขวา */
+
+.exam-sidebar {
+  padding: 1rem 1.1rem;
+  border-radius: 1.2rem;
+}
+
+/* grid ปุ่ม 1–100 ข้อ */
+.exam-result-grid {
+  margin-top: 0.35rem;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+/* ปุ่มแต่ละข้อใน grid */
+.exam-nav-btn {
+  border: none;
+  padding: 0.18rem 0;
+  border-radius: 0.4rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  background: #f1f5f9;
+  color: #4b5563;
+}
+
+.exam-nav-btn.state-empty {
+  background: #f1f5f9;
+  color: #4b5563;
+}
+
+.exam-nav-btn.state-answered {
+  background: #e0f2fe;
+  color: #1d4ed8;
+}
+
+.exam-nav-btn.state-correct {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.exam-nav-btn.state-wrong {
+  background: #fed7d7;
+  color: #9b2c2c;
+}
+
+.exam-nav-btn:hover {
+  filter: brightness(0.97);
+}
+
+/* legend สีเล็ก ๆ */
+.legend-dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  margin-right: 0.2rem;
+}
+
+.legend-empty {
+  background: #e2e8f0;
+}
+
+.legend-correct {
+  background: #68d391;
+}
+
+.legend-wrong {
+  background: #fc8181;
+}
+
+/* กลุ่มปุ่มใน exam-controls (pattern C) */
+
+.exam-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 0.3rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* base ของปุ่มสองอันในแถบนี้ */
+.exam-actions .btn {
+  padding: .4rem 1.25rem;
+  font-size: .84rem;
+  border-radius: 999px;
+}
+
+/* ปุ่ม submit: เด่นสุด */
+.exam-actions .btn-primary {
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+}
+
+/* ปุ่ม clear: danger soft */
+.exam-actions #btn-clear {
+  background: #fff5f5;
+  border-color: #fed7d7;
+  color: #c53030;
+  box-shadow: 0 1px 3px rgba(248, 113, 113, 0.35);
+}
+
+.exam-actions #btn-clear:hover {
+  background: #fee2e2;
+}
+
+/* Responsive exam layout */
+
+@media (max-width: 1040px) {
+  .exam-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-sidebar-col {
+    order: -1; /* เอา sidebar ขึ้นบน */
+  }
+}
+
+/* Responsive ปุ่ม pattern C */
+
+@media (max-width: 640px) {
+  .exam-actions {
+    width: 100%;
+    justify-content: stretch;
+    gap: 0.4rem;
+  }
+
+  .exam-actions .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
+
+/* =========================================
+   Back-to-top button (generic ใช้ได้ทุกหน้า)
+========================================= */
+
+.back-to-top {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 40;
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  font-size: .78rem;
+  color: var(--accent-strong);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+.back-to-top .icon {
+  font-size: .9rem;
+}
+
+@media (max-width: 640px) {
+  .back-to-top {
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+/* =========================================
+   Exam summary box (สรุปคะแนนหลังส่งข้อสอบ)
+========================================= */
+
+.exam-summary-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.exam-summary-main {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.exam-summary-score {
+  min-width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+  background: radial-gradient(circle at 30% 20%, #ebf4ff, #bee3f8);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.28);
+}
+
+.exam-summary-score span {
+  font-size: 0.9rem;
+  margin-left: 0.15rem;
+  font-weight: 500;
+}
+
+.exam-summary-text {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.exam-summary-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+.exam-summary-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.exam-summary-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: #edf2f7;
+  color: var(--muted);
+}
+
+.exam-summary-pill strong {
+  font-size: 0.9rem;
+}
+
+.exam-summary-pill-correct {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.exam-summary-pill-wrong {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.exam-summary-pill-empty {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+@media (max-width: 640px) {
+  .exam-summary-main {
+    align-items: flex-start;
+  }
+
+  .exam-summary-score {
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.4rem;
+  }
+}
+
+/* =========================================
+   Exam summary per section (ภาค ก / ข / ค)
+========================================= */
+
+.exam-summary-sections {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed rgba(148, 163, 184, 0.6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.4rem;
+}
+
+.exam-summary-section-item {
+  background: #f8fafc;
+  border-radius: 0.7rem;
+  padding: 0.45rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.exam-summary-section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.exam-summary-section-score {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.exam-summary-section-main strong {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.exam-summary-section-main span {
+  opacity: 0.9;
+}
+
+.exam-summary-section-percent {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+@media (max-width: 640px) {
+  .exam-summary-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   Floating back-to-top (เฉพาะหน้าข้อสอบ)
+========================================= */
+
+.exam-scroll-top-btn {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 4.4rem;
+  z-index: 90;
+  display: none; /* เปิด/ปิดด้วย JS */
+  padding: .45rem .9rem;
+  font-size: .8rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent-strong);
+}
+
+.exam-scroll-top-btn .icon {
+  font-size: .9rem;
+}
+
+@media (max-width: 640px) {
+  .exam-scroll-top-btn {
+    right: 1rem;
+    bottom: 5.4rem;
+  }
+}
+
+/* =========================================
+   Sticky exam actions bar (ให้แสดงตลอดเวลา)
+========================================= */
+
+.exam-sticky-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: .4rem 0 .7rem;
+  background: linear-gradient(
+    to top,
+    rgba(226, 232, 240, 0.98),
+    rgba(248, 250, 252, 0.95)
+  );
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  z-index: 80;
+
+  /* ให้แสดงตลอดเวลา */
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+
+  transition:
+    transform 0.22s ease-out,
+    opacity 0.22s ease-out;
+}
+
+/* เผื่ออนาคตถ้าอยากให้ JS toggle class นี้ก็ยังใช้ได้ */
+.exam-sticky-bar.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.exam-sticky-bar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.exam-sticky-status {
+  font-size: .8rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ใช้ pattern ปุ่มเดียวกับด้านบน แต่จัดให้ชิดขวา */
+.exam-sticky-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .35rem;
+}
+
+.exam-sticky-actions .btn {
+  padding: .4rem 1.3rem;
+  font-size: .82rem;
+}
+
+/* ปุ่ม clear ใน sticky เป็น danger soft */
+.exam-sticky-actions #btn-clear-sticky {
+  background: #fff5f5;
+  border-color: #fed7d7;
+  color: #c53030;
+}
+
+.exam-sticky-actions #btn-clear-sticky:hover {
+  background: #fee2e2;
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  .exam-sticky-bar-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .exam-sticky-status {
+    white-space: normal;
+  }
+
+  .exam-sticky-actions {
+    width: 100%;
+  }
+
+  .exam-sticky-actions .btn {
+    flex: 1 1 0;
+    justify-content: center;
   }
 }

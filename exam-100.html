@@ -11,72 +11,154 @@
 <header class="site-header">
   <div class="container header-inner">
     <div class="brand-block">
-      <h1 class="brand-title">ชุดเตรียมสอบ อบจ. พยาบาลวิชาชีพ</h1>
+      <h1 class="brand-title">ข้อสอบ 100 ข้อ — อบจ. พยาบาลวิชาชีพ</h1>
       <p class="brand-subtitle">
-        ภาค ก (กฎหมาย/ท้องถิ่น) · ภาค ข (วิชาชีพ/กฎหมายสุขภาพ) · ภาค ค (สัมภาษณ์/ทัศนคติ)
+        ภาค ก / ภาค ข / ภาค ค — แบบฝึกหัด 4 ตัวเลือก ตรวจคะแนนอัตโนมัติ + เฉลยพร้อมคำอธิบาย
       </p>
     </div>
     <div class="header-actions">
-      <!-- กลับหน้าแรก -->
       <button class="btn btn-ghost" type="button" onclick="window.location.href='index.html'">
         <span class="icon">←</span>
         <span>กลับหน้าหลัก</span>
       </button>
-
-      <!-- เปิดโน้ตรวม (ให้ wording เหมือนหน้าอื่น) -->
       <button class="btn" type="button" onclick="window.location.href='exam-notes.html'">
         <span class="icon">📒</span>
-        <span>อ่านโน้ตรวม ภาค ก / ข / ค</span>
+        <span>เปิดโน้ตรวม</span>
       </button>
     </div>
   </div>
 </header>
 
-<main class="container">
-  <!-- hero -->
+<main class="container exam-main">
+  <!-- Hero สั้น ๆ ด้านบน -->
   <section class="hero">
-    <h2 class="hero-title">ข้อสอบเก็ง 100 ข้อ — ฝึกทำเหมือนสนามจริง</h2>
+    <h2 class="hero-title">ชุดข้อสอบเก็ง 100 ข้อ — ภาค ก / ภาค ข / ภาค ค</h2>
     <p class="hero-subtitle">
-      แนะนำให้ลองทำ <strong>รอบแรกแบบไม่ดูเฉลย</strong> ก่อน แล้วค่อยกดส่งข้อสอบเพื่อดูคะแนนรวมและคำอธิบายเฉลย
-      จากนั้นย้อนกลับไปอ่านโน้ตรวมในหัวข้อที่ทำผิดบ่อย แล้วค่อยกลับมาลองทำรอบถัดไป
+      แนะนำให้ลองทำ <strong>รอบแรกแบบไม่ดูเฉลย</strong> แล้วค่อยกดส่งข้อสอบเพื่อดูคะแนนรวมและคำอธิบาย
+      จากนั้นย้อนกลับไปอ่านโน้ตในหัวข้อที่ทำผิดบ่อย แล้วทำซ้ำจนได้มากกว่า 80–90%
     </p>
   </section>
 
-  <!-- การ์ดควบคุมบนสุด -->
-  <section class="card" id="exam-controls">
-    <div class="card-header" style="display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;">
-      <div>
-        <div class="section-label">โหมดทำข้อสอบ</div>
-        <h3 style="margin:.2rem 0 .4rem;font-size:1rem;color:var(--accent-strong);">
-          ชุดข้อสอบ 100 ข้อ สำหรับฝึกทำภาค ก / ข / ค
-        </h3>
-        <p class="note" style="font-size:.82rem;color:var(--muted);margin:0;">
-          * ข้อสอบทั้งหมดโหลดจากไฟล์ <code>json/exam-100.json</code> คุณสามารถแก้ไข เพิ่ม หรือลดข้อสอบได้ง่าย ๆ
-          ด้วยการปรับเนื้อหาในไฟล์เดียว
-        </p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:.4rem;align-items:flex-end;">
-        <button class="btn btn-primary" type="button" id="btn-submit">
-          <span class="icon">✔</span>
-          <span>ส่งข้อสอบ &amp; ดูเฉลย</span>
-        </button>
-        <button class="btn btn-ghost" type="button" id="btn-clear">
-          <span class="icon">↻</span>
-          <span>ล้างคำตอบทั้งหมด</span>
-        </button>
-      </div>
-    </div>
-    <div id="exam-summary" class="tip" style="margin-top:.5rem;display:none;"></div>
-  </section>
+  <!-- layout 2 คอลัมน์: ซ้ายข้อสอบ / ขวาสรุปผล -->
+  <div class="exam-layout">
+    <!-- ฝั่งซ้าย: controls + questions -->
+    <section class="exam-main-col">
+      <!-- การ์ดควบคุมบนสุด -->
+      <section class="card" id="exam-controls">
+        <div class="card-header"
+             style="display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;">
+          <div>
+            <div class="section-label">โหมดทำข้อสอบจำลอง</div>
+            <h3 style="margin:.2rem 0 .4rem;font-size:1rem;color:var(--accent-strong);">
+              ข้อสอบ 100 ข้อจากไฟล์
+              <code data-role="exam-json-name">json/exam-100-1.json</code>
+            </h3>
+            <p style="font-size:.82rem;color:var(--muted);margin:0;">
+              * ข้อสอบทั้งหมดโหลดจากไฟล์ JSON — แก้ไขหรือเพิ่มข้อสอบได้ง่าย ๆ โดยแก้ที่ไฟล์เดียว
+            </p>
+          </div>
 
-  <!-- พื้นที่แสดงข้อสอบทั้งหมด -->
-  <section id="exam-container" style="margin-top:1rem;">
-    <!-- exam-100.js จะเติมข้อสอบลงมานี่ -->
-    <div class="card" id="exam-loading">
-      กำลังโหลดข้อสอบจาก <code>json/exam-100.json</code> ...
-    </div>
-  </section>
+          <!-- ปุ่มส่ง / ล้าง (ปุ่มหลัก) -->
+          <div class="exam-actions">
+            <button class="btn btn-primary" type="button" id="btn-submit">
+              <span class="icon">✔</span>
+              <span>ส่งข้อสอบ &amp; ดูเฉลย</span>
+            </button>
+            <button class="btn btn-ghost" type="button" id="btn-clear">
+              <span class="icon">↻</span>
+              <span>ล้างคำตอบทั้งหมด</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- progress bar หลัก -->
+        <div class="exam-progress-wrap" style="margin-top:.75rem;">
+          <div class="exam-progress-bar">
+            <div class="exam-progress-fill" id="exam-progress-fill"></div>
+          </div>
+          <div class="exam-progress-meta">
+            <span id="exam-progress-text">ตอบแล้ว 0 / 0 ข้อ (0%)</span>
+          </div>
+        </div>
+
+        <!-- กล่องสรุปคะแนนหลัง submit -->
+        <div id="exam-summary" class="tip" style="margin-top:.7rem;display:none;"></div>
+      </section>
+
+      <!-- พื้นที่แสดงข้อสอบทั้งหมด -->
+      <section id="exam-container" style="margin-top:1rem;">
+        <div class="card" id="exam-loading">
+          กำลังโหลดข้อสอบจาก
+          <code data-role="exam-json-name">json/exam-100-1.json</code> ...
+        </div>
+      </section>
+    </section>
+
+    <!-- ฝั่งขวา: sidebar summary -->
+    <aside class="exam-sidebar-col">
+      <section class="card exam-sidebar">
+        <div class="section-label">สรุปสถานะข้อสอบ</div>
+        <h3 style="margin:.3rem 0 .5rem;font-size:1rem;color:var(--accent-strong);">
+          ความคืบหน้าการทำข้อสอบ
+        </h3>
+
+        <!-- progress bar ย่อ -->
+        <div class="exam-progress-bar small">
+          <div class="exam-progress-fill" id="exam-progress-fill-sidebar"></div>
+        </div>
+        <p class="exam-progress-text" id="exam-progress-count"
+           style="font-size:.82rem;margin:.3rem 0 .6rem;">
+          ตอบแล้ว 0 / 0 ข้อ (0%)
+        </p>
+
+        <hr style="border:none;border-top:1px dashed var(--border);margin:.6rem 0;" />
+
+        <h4 style="margin:0 0 .4rem;font-size:.9rem;color:var(--muted);">
+          แผงข้อสอบ (แตะเลขเพื่อเลื่อนข้อ)
+        </h4>
+        <div id="exam-result-grid" class="exam-result-grid">
+          <!-- exam-100.js จะสร้างปุ่ม 1–100 ให้ -->
+        </div>
+
+        <!-- legend สีเล็ก ๆ -->
+        <div style="margin-top:.6rem;font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.4rem;">
+          <span><span class="legend-dot legend-empty"></span> ยังไม่ได้ตอบ</span>
+          <span><span class="legend-dot legend-correct"></span> ตอบถูก</span>
+          <span><span class="legend-dot legend-wrong"></span> ตอบผิด</span>
+        </div>
+      </section>
+    </aside>
+  </div>
 </main>
+
+<!-- ปุ่มกลับไปด้านบน (ให้ JS โชว์/ซ่อนเอง) -->
+<button
+  id="btn-scroll-top"
+  class="exam-scroll-top-btn"
+  type="button"
+  aria-label="กลับไปด้านบน"
+>
+  <span class="icon">↑</span>
+</button>
+
+<!-- Sticky action bar ด้านล่างจอ (แสดงตลอดเวลา) -->
+<div id="exam-sticky-bar" class="exam-sticky-bar" aria-hidden="false">
+  <div class="exam-sticky-bar-inner">
+    <div class="exam-sticky-status">
+      กำลังทำข้อสอบอยู่ — สามารถกดส่งข้อสอบหรือล้างคำตอบได้ทุกเวลา
+    </div>
+    <div class="exam-sticky-actions">
+      <button class="btn btn-primary" type="button" id="btn-submit-sticky">
+        <span class="icon">✔</span>
+        <span>ส่งข้อสอบ &amp; ดูเฉลย</span>
+      </button>
+      <button class="btn" type="button" id="btn-clear-sticky">
+        <span class="icon">⟲</span>
+        <span>ล้างคำตอบทั้งหมด</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <script src="js/exam-100.js" defer></script>
 </body>
