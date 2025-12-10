@@ -1,6 +1,6 @@
 // js/exam-100.js
 // ระบบทำข้อสอบ 100 ข้อ + ตรวจคะแนน + แสดงเฉลยจากไฟล์ JSON (สุ่มชุด)
-// รองรับไฟล์: json/exam-100-1.json, json/exam-100-2.json, json/exam-100-3.json
+// รองรับไฟล์: json/exam-100-1.json, json/exam-100-2.json, json/exam-100-3.json ...
 
 "use strict";
 
@@ -11,6 +11,9 @@ const EXAM_FILES = [
   "json/exam-100-4.json",
   "json/exam-100-5.json",
 ];
+
+// ตัวอักษรเลือกข้อ A / B / C / D ...
+const CHOICE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 let EXAM_JSON_PATH = null;
 
@@ -252,6 +255,12 @@ function updateExamJsonLabels(path) {
   });
 }
 
+// helper แปลง index -> ตัวอักษร A/B/C/D
+function indexToLetter(idx) {
+  if (typeof idx !== "number" || idx < 0) return "";
+  return CHOICE_LETTERS[idx] || String(idx + 1);
+}
+
 // แปลงชื่อ section ให้เป็น "ภาค ก", "ภาค ข" ฯลฯ ใช้ร่วมทั้ง navigator + summary
 function normalizeSectionLabel(sectionRaw) {
   if (!sectionRaw || typeof sectionRaw !== "string") {
@@ -323,7 +332,7 @@ async function loadExam(container, jsonPath) {
     header.appendChild(rightHeader);
     card.appendChild(header);
 
-    // ตัวเลือก
+    // ตัวเลือกแบบ A/B/C/D
     if (Array.isArray(q.choices)) {
       const ul = document.createElement("ul");
       ul.className = "deep-list";
@@ -332,21 +341,25 @@ async function loadExam(container, jsonPath) {
         const li = document.createElement("li");
 
         const labelChoice = document.createElement("label");
-        labelChoice.style.display = "flex";
-        labelChoice.style.alignItems = "flex-start";
-        labelChoice.style.gap = ".4rem";
-        labelChoice.style.cursor = "pointer";
+        labelChoice.className = "exam-choice";
 
         const input = document.createElement("input");
         input.type = "radio";
         input.name = `q-${index}`;
         input.value = String(cIndex);
 
+        const spanLetter = document.createElement("span");
+        spanLetter.className = "choice-letter";
+        spanLetter.textContent = `${indexToLetter(cIndex)}.`;
+
         const spanText = document.createElement("span");
+        spanText.className = "choice-text";
         spanText.textContent = choiceText;
 
         labelChoice.appendChild(input);
+        labelChoice.appendChild(spanLetter);
         labelChoice.appendChild(spanText);
+
         li.appendChild(labelChoice);
         ul.appendChild(li);
       });
@@ -556,25 +569,33 @@ function evaluateExam({ questions, answeredMap }) {
     if (answerBox && answerText) {
       answerBox.style.display = "block";
 
+      const correctIdx =
+        typeof q.answerIndex === "number" ? q.answerIndex : null;
       const correctChoiceText =
-        Array.isArray(q.choices) && typeof q.answerIndex === "number"
-          ? q.choices[q.answerIndex] ?? ""
+        Array.isArray(q.choices) && correctIdx !== null
+          ? q.choices[correctIdx] ?? ""
           : "";
+
+      const correctLetter = indexToLetter(correctIdx);
+      const selectedLetter =
+        selectedIndex !== null ? indexToLetter(selectedIndex) : "";
 
       if (isCorrect) {
         card.style.borderColor = "var(--success)";
         answerText.innerHTML = `
-          ✅ ตอบถูกต้อง — เฉลย: <strong>${correctChoiceText}</strong>
+          ✅ ตอบถูกต้อง — เฉลย: <strong>ข้อ ${correctLetter} (${correctChoiceText})</strong>
         `;
       } else if (selectedIndex === null) {
         card.style.borderColor = "var(--danger)";
         answerText.innerHTML = `
-          ⚠️ ยังไม่ได้เลือกคำตอบ — เฉลยที่ถูกคือ <strong>${correctChoiceText}</strong>
+          ⚠️ ยังไม่ได้เลือกคำตอบ — เฉลยที่ถูกคือ
+          <strong>ข้อ ${correctLetter} (${correctChoiceText})</strong>
         `;
       } else {
         card.style.borderColor = "var(--danger)";
         answerText.innerHTML = `
-          ❌ ตอบยังไม่ถูก — เฉลยที่ถูกคือ <strong>${correctChoiceText}</strong>
+          ❌ ตอบยังไม่ถูก — คุณเลือกข้อ ${selectedLetter}
+          แต่เฉลยที่ถูกคือ <strong>ข้อ ${correctLetter} (${correctChoiceText})</strong>
         `;
       }
     }

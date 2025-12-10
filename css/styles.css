@@ -849,6 +849,66 @@ details.quiz li {
   color: #64748b;
 }
 
+/* ===== Scope card (ขอบเขตเนื้อหาที่สอบ) ===== */
+
+.index-card-scope {
+  margin-top: 1.8rem;
+}
+
+.scope-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.scope-card {
+  background: #f8fafc;
+  border-radius: 1.1rem;
+  border: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.scope-card-title {
+  margin: 0 0 0.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.scope-card-subtitle {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.scope-card-intro {
+  margin: 0 0 0.5rem;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.scope-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.84rem;
+}
+
+.scope-list > li {
+  margin-bottom: 0.25rem;
+}
+
+.scope-sublist {
+  margin-top: 0.25rem;
+  padding-left: 1.2rem;
+  list-style-type: disc;
+}
+
+.scope-sublist li {
+  margin-bottom: 0.18rem;
+}
+
 /* Responsive index card */
 
 @media (max-width: 900px) {
@@ -863,6 +923,14 @@ details.quiz li {
 
   .index-main {
     padding-top: 1.6rem;
+  }
+
+  .index-card-scope {
+    margin-top: 1.4rem;
+  }
+
+  .scope-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -940,6 +1008,32 @@ details.quiz li {
   margin-bottom: 0.25rem;
 }
 
+/* ===== ตัวเลือกคำตอบแบบ A / B / C / D ===== */
+
+.exam-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.exam-choice input[type="radio"] {
+  margin-top: 0.15rem;
+}
+
+.choice-letter {
+  display: inline-block;
+  min-width: 1.6rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.choice-text {
+  flex: 1;
+}
+
 /* progress bar หลักด้านบน */
 
 .exam-progress-wrap {
@@ -994,8 +1088,8 @@ details.quiz li {
   position: -webkit-sticky;
   position: sticky;
   top: 4.5rem; /* เผื่อ header ด้านบน */
-  max-height: calc(100vh - 5.2rem); /* สูงสุดไม่เกินจอ */
-  overflow-y: auto; /* ถ้ายาวให้ scroll ภายใน */
+  max-height: calc(100vh - 5.2rem);
+  overflow-y: auto;
 }
 
 /* ===== แผงข้อสอบแยกตามภาค (sidebar) ===== */
@@ -1105,7 +1199,7 @@ details.quiz li {
 /* กลุ่มปุ่มใน exam-controls (ใช้เป็นปุ่ม hidden ให้ sticky bar เรียกใช้) */
 
 .exam-actions {
-  display: none; /* ซ่อนปุ่มบนการ์ด */
+  display: none;
   flex-wrap: nowrap;
   gap: 0.3rem;
   align-items: center;
@@ -1144,7 +1238,6 @@ details.quiz li {
     order: -1; /* เอา sidebar ขึ้นบน */
   }
 
-  /* ยัง sticky เหมือนเดิม แค่ปรับระยะห่างจาก header นิดหน่อย */
   .exam-sidebar-sticky {
     position: sticky;
     top: 4.5rem;
@@ -1452,11 +1545,9 @@ details.quiz li {
   border-top: 1px solid var(--border);
   backdrop-filter: blur(10px);
   z-index: 80;
-
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
-
   transition:
     transform 0.22s ease-out,
     opacity 0.22s ease-out;
