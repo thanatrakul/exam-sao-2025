@@ -8,6 +8,8 @@ const EXAM_FILES = [
   "json/exam-100-1.json",
   "json/exam-100-2.json",
   "json/exam-100-3.json",
+  "json/exam-100-4.json",
+  "json/exam-100-5.json",
 ];
 
 let EXAM_JSON_PATH = null;
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "exam-progress-count",
   );
 
-  const navGrid = document.getElementById("exam-result-grid");
+  const navSectionsContainer = document.getElementById("exam-result-sections");
 
   // ปุ่มใน sticky bar (ล่างจอ)
   const btnSubmitSticky = document.getElementById("btn-submit-sticky");
@@ -42,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ===== เชื่อมปุ่ม sticky กับปุ่มหลัก =====
+  // ===== เชื่อมปุ่ม sticky กับปุ่มหลัก (ที่ซ่อนอยู่ด้านบน) =====
   if (btnSubmitSticky) {
     btnSubmitSticky.addEventListener("click", () => {
       btnSubmit.click();
@@ -58,11 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnScrollTop) {
     window.addEventListener("scroll", () => {
       const y = window.scrollY || window.pageYOffset || 0;
-      if (y > 260) {
-        btnScrollTop.style.display = "inline-flex";
-      } else {
-        btnScrollTop.style.display = "none";
-      }
+      btnScrollTop.style.display = y > 260 ? "inline-flex" : "none";
     });
 
     btnScrollTop.addEventListener("click", () => {
@@ -85,11 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
       answeredMap.clear();
       submitted = false;
 
-      buildNavigator(navGrid, questions.length, (index) => {
-        scrollToQuestionCard(index);
-      });
-
-      navButtons = Array.from(navGrid.querySelectorAll(".exam-nav-btn"));
+      navButtons = buildNavigatorBySection(
+        navSectionsContainer,
+        questions,
+        (index) => {
+          scrollToQuestionCard(index);
+        },
+      );
 
       if (summaryEl) {
         summaryEl.style.display = "none";
@@ -224,6 +224,21 @@ function updateExamJsonLabels(path) {
   });
 }
 
+// แปลงชื่อ section ให้เป็น "ภาค ก", "ภาค ข" ฯลฯ ใช้ร่วมทั้ง navigator + summary
+function normalizeSectionLabel(sectionRaw) {
+  if (!sectionRaw || typeof sectionRaw !== "string") {
+    return "รวมทุกภาค";
+  }
+  const trimmed = sectionRaw.trim();
+
+  const match = trimmed.match(/^ภาค\s*([ก-ฮ])/);
+  if (match) {
+    return `ภาค ${match[1]}`;
+  }
+
+  return trimmed;
+}
+
 // ==================== Load & build UI ====================
 
 async function loadExam(container, jsonPath) {
@@ -341,23 +356,70 @@ async function loadExam(container, jsonPath) {
 
 // ==================== Navigator & choice listeners ====================
 
-function buildNavigator(navGrid, total, onClickIndex) {
-  if (!navGrid) return;
-  navGrid.innerHTML = "";
+function buildNavigatorBySection(navSectionsContainer, questions, onClickIndex) {
+  if (!navSectionsContainer) return [];
 
-  for (let i = 0; i < total; i += 1) {
+  navSectionsContainer.innerHTML = "";
+
+  const sectionMap = new Map(); // label -> { countEl, gridEl, indices: [] }
+  const navButtons = new Array(questions.length);
+
+  questions.forEach((q, index) => {
+    const sectionLabel = normalizeSectionLabel(q.section);
+    let section = sectionMap.get(sectionLabel);
+
+    // สร้าง block ใหม่สำหรับภาคนี้ ถ้ายังไม่มี
+    if (!section) {
+      const sectionEl = document.createElement("section");
+      sectionEl.className = "exam-result-section";
+
+      const headerEl = document.createElement("div");
+      headerEl.className = "exam-result-section-header";
+
+      const titleEl = document.createElement("div");
+      titleEl.className = "exam-result-section-title";
+      titleEl.textContent = sectionLabel;
+
+      const countEl = document.createElement("div");
+      countEl.className = "exam-result-section-count";
+      countEl.textContent = "";
+
+      headerEl.appendChild(titleEl);
+      headerEl.appendChild(countEl);
+
+      const gridEl = document.createElement("div");
+      gridEl.className = "exam-result-grid";
+
+      sectionEl.appendChild(headerEl);
+      sectionEl.appendChild(gridEl);
+      navSectionsContainer.appendChild(sectionEl);
+
+      section = { countEl, gridEl, indices: [] };
+      sectionMap.set(sectionLabel, section);
+    }
+
+    // ปุ่มข้อสอบในภาคนี้
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "exam-nav-btn state-empty";
-    btn.dataset.questionIndex = String(i);
-    btn.textContent = String(i + 1);
+    btn.dataset.questionIndex = String(index);
+    btn.textContent = String(index + 1);
 
     btn.addEventListener("click", () => {
-      onClickIndex(i);
+      onClickIndex(index);
     });
 
-    navGrid.appendChild(btn);
-  }
+    section.gridEl.appendChild(btn);
+    section.indices.push(index);
+    navButtons[index] = btn;
+  });
+
+  // เติมจำนวนข้อในแต่ละภาค
+  sectionMap.forEach((section) => {
+    section.countEl.textContent = `${section.indices.length} ข้อ`;
+  });
+
+  return navButtons;
 }
 
 function attachChoiceListeners(questions, answeredMap, onChange) {
@@ -397,17 +459,7 @@ function evaluateExam({ questions, answeredMap }) {
   const bySection = new Map(); // key => { label, correct, wrong, unanswered, answered, total, percent }
 
   function getSectionLabel(sectionRaw) {
-    if (!sectionRaw || typeof sectionRaw !== "string") {
-      return "รวมทุกภาค";
-    }
-    const trimmed = sectionRaw.trim();
-
-    const match = trimmed.match(/^ภาค\s*([ก-ฮ])/);
-    if (match) {
-      return `ภาค ${match[1]}`;
-    }
-
-    return trimmed;
+    return normalizeSectionLabel(sectionRaw);
   }
 
   function ensureSectionStats(sectionLabel) {

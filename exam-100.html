@@ -58,7 +58,7 @@
             </p>
           </div>
 
-          <!-- ปุ่มส่ง / ล้าง (ปุ่มหลัก) -->
+          <!-- ปุ่มส่ง / ล้าง (ซ่อนด้วย CSS แต่ต้องมีไว้ให้ sticky bar ใช้) -->
           <div class="exam-actions">
             <button class="btn btn-primary" type="button" id="btn-submit">
               <span class="icon">✔</span>
@@ -94,15 +94,14 @@
       </section>
     </section>
 
-    <!-- ฝั่งขวา: sidebar summary -->
+    <!-- ฝั่งขวา: sidebar summary (ทั้งก้อน sticky) -->
     <aside class="exam-sidebar-col">
-      <section class="card exam-sidebar">
+      <section class="card exam-sidebar exam-sidebar-sticky">
         <div class="section-label">สรุปสถานะข้อสอบ</div>
         <h3 style="margin:.3rem 0 .5rem;font-size:1rem;color:var(--accent-strong);">
           ความคืบหน้าการทำข้อสอบ
         </h3>
 
-        <!-- progress bar ย่อ -->
         <div class="exam-progress-bar small">
           <div class="exam-progress-fill" id="exam-progress-fill-sidebar"></div>
         </div>
@@ -114,13 +113,11 @@
         <hr style="border:none;border-top:1px dashed var(--border);margin:.6rem 0;" />
 
         <h4 style="margin:0 0 .4rem;font-size:.9rem;color:var(--muted);">
-          แผงข้อสอบ (แตะเลขเพื่อเลื่อนข้อ)
+          แผงข้อสอบแยกตามภาค (แตะเลขเพื่อเลื่อนข้อ)
         </h4>
-        <div id="exam-result-grid" class="exam-result-grid">
-          <!-- exam-100.js จะสร้างปุ่ม 1–100 ให้ -->
-        </div>
 
-        <!-- legend สีเล็ก ๆ -->
+        <div id="exam-result-sections" class="exam-result-sections"></div>
+
         <div style="margin-top:.6rem;font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.4rem;">
           <span><span class="legend-dot legend-empty"></span> ยังไม่ได้ตอบ</span>
           <span><span class="legend-dot legend-correct"></span> ตอบถูก</span>
