@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSubmitSticky = document.getElementById("btn-submit-sticky");
   const btnClearSticky = document.getElementById("btn-clear-sticky");
 
+  // ข้อความสถานะใน sticky bar
+  const stickyStatusEl = document.getElementById("exam-sticky-status");
+
   // ปุ่ม back-to-top
   const btnScrollTop = document.getElementById("btn-scroll-top");
 
@@ -96,13 +99,21 @@ document.addEventListener("DOMContentLoaded", () => {
         summaryEl.innerHTML = "";
       }
 
+      const totalQuestions = questions.length;
+
       updateProgressUI({
         answered: 0,
-        total: questions.length,
+        total: totalQuestions,
         progressFillMain,
         progressTextMain,
         progressFillSidebar,
         progressCountSidebar,
+      });
+
+      updateStickyStatus(stickyStatusEl, {
+        answered: 0,
+        total: totalQuestions,
+        submitted: false,
       });
 
       attachChoiceListeners(questions, answeredMap, () => {
@@ -121,6 +132,11 @@ document.addEventListener("DOMContentLoaded", () => {
             answeredMap,
             questions.length,
           );
+          updateStickyStatus(stickyStatusEl, {
+            answered,
+            total: questions.length,
+            submitted: false,
+          });
         }
       });
     })
@@ -157,6 +173,12 @@ document.addEventListener("DOMContentLoaded", () => {
       progressFillSidebar,
       progressCountSidebar,
     });
+
+    updateStickyStatus(stickyStatusEl, {
+      answered,
+      total: questions.length,
+      submitted: true,
+    });
   });
 
   // ===== เมื่อกด "ล้างคำตอบทั้งหมด" =====
@@ -177,6 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
       progressTextMain,
       progressFillSidebar,
       progressCountSidebar,
+    });
+
+    updateStickyStatus(stickyStatusEl, {
+      answered: 0,
+      total: questions.length,
+      submitted: false,
     });
 
     resetNavigator(navButtons);
@@ -695,6 +723,18 @@ function updateProgressUI({
   }
   if (progressCountSidebar) {
     progressCountSidebar.textContent = `ตอบแล้ว ${answered} / ${total} ข้อ (${percent}%)`;
+  }
+}
+
+// อัปเดตข้อความสถานะใน sticky bar
+function updateStickyStatus(stickyStatusEl, { answered, total, submitted }) {
+  if (!stickyStatusEl) return;
+  const percent = total ? Math.round((answered / total) * 100) : 0;
+
+  if (submitted) {
+    stickyStatusEl.textContent = `ส่งข้อสอบแล้ว — ตอบแล้ว ${answered} / ${total} ข้อ (${percent}%)`;
+  } else {
+    stickyStatusEl.textContent = `กำลังทำข้อสอบ — ตอบแล้ว ${answered} / ${total} ข้อ (${percent}%)`;
   }
 }
 

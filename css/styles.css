@@ -29,7 +29,8 @@ body {
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -65,14 +66,14 @@ main {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: .75rem;
-  padding: .7rem 0;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
 }
 
 .brand-block {
   display: flex;
   flex-direction: column;
-  gap: .15rem;
+  gap: 0.15rem;
 }
 
 .brand-title {
@@ -83,7 +84,7 @@ main {
 }
 
 .brand-subtitle {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--muted);
 }
 
@@ -92,22 +93,22 @@ main {
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 /* ถ้ามีลิงก์ nav เพิ่มทีหลัง */
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  gap: .3rem;
+  gap: 0.3rem;
 }
 
 .nav-links a {
-  font-size: .8rem;
+  font-size: 0.8rem;
   text-decoration: none;
   color: var(--muted);
   border-radius: 999px;
-  padding: .2rem .7rem;
+  padding: 0.2rem 0.7rem;
   border: 1px solid transparent;
 }
 
@@ -118,47 +119,100 @@ main {
 }
 
 /* =========================================
-   ปุ่มต่าง ๆ
+   ปุ่มต่าง ๆ (global)
 ========================================= */
 
 .btn {
   appearance: none;
   border: 1px solid transparent;
   border-radius: 999px;
-  padding: .3rem .8rem;
-  font-size: .8rem;
+  padding: 0.34rem 0.95rem;
+  font-size: 0.8rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: .3rem;
+  gap: 0.3rem;
   background: #ffffff;
   color: var(--accent-strong);
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
 }
 
 .btn span.icon {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .btn:hover {
   background: var(--accent-soft);
   border-color: var(--accent-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.16);
 }
 
 .btn-primary {
   background: var(--accent);
-  color: white;
+  color: #ffffff;
   border-color: var(--accent);
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
 }
 
 .btn-primary:hover {
   background: var(--accent-strong);
   border-color: var(--accent-strong);
+  box-shadow: 0 4px 14px rgba(30, 64, 175, 0.4);
 }
 
 .btn-ghost {
   background: transparent;
   border-color: var(--border);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: #edf2f7;
+  border-color: var(--border);
+  color: var(--accent-strong);
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.35);
+}
+
+/* ปุ่มใน Header ให้โทนเดียวกับปุ่มข้อสอบ */
+
+.site-header .btn {
+  background: #f8fafc;
+  border-color: rgba(148, 163, 184, 0.7);
+  color: var(--accent-strong);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.site-header .btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+.site-header .btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.site-header .btn-ghost:hover {
+  background: #edf2f7;
+  border-color: var(--border);
+  color: var(--accent-strong);
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.35);
+}
+
+.site-header .btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
 }
 
 /* =========================================
@@ -169,7 +223,7 @@ main {
 .note-block,
 .menu-card {
   background: var(--bg-card);
-  border-radius: .9rem;
+  border-radius: 0.9rem;
   border: 1px solid var(--border);
   padding: 1rem 1.1rem;
   box-shadow: var(--shadow-soft);
@@ -177,93 +231,93 @@ main {
 
 /* label เล็ก ๆ ด้านบน */
 .section-label {
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: .03em;
+  letter-spacing: 0.03em;
 }
 
 /* pill focus (ด้านขวาบน) */
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: .3rem;
-  padding: .1rem .6rem;
+  gap: 0.3rem;
+  padding: 0.1rem 0.6rem;
   border-radius: 999px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   background: var(--accent-soft);
   color: var(--accent-strong);
 }
 
 .pill small {
-  font-size: .7rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 /* badge เล็ก ๆ */
 .badge {
   display: inline-block;
-  font-size: .75rem;
-  padding: .05rem .4rem;
-  border-radius: .4rem;
+  font-size: 0.75rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 0.4rem;
   background: #edf2f7;
   color: var(--muted);
-  margin-left: .25rem;
+  margin-left: 0.25rem;
 }
 
 .keypoints-title {
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  margin-top: .3rem;
-  margin-bottom: .2rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.2rem;
   color: var(--accent-strong);
 }
 
 .keypoints {
-  font-size: .88rem;
+  font-size: 0.88rem;
   padding-left: 1.1rem;
-  margin: .2rem 0 .5rem;
+  margin: 0.2rem 0 0.5rem;
 }
 
 .keypoints li {
-  margin-bottom: .1rem;
+  margin-bottom: 0.1rem;
 }
 
 .deep-list {
-  font-size: .9rem;
+  font-size: 0.9rem;
   padding-left: 1.1rem;
 }
 
 .deep-list > li {
-  margin-bottom: .3rem;
+  margin-bottom: 0.3rem;
 }
 
 .deep-sub {
   padding-left: 1.1rem;
-  margin-top: .15rem;
+  margin-top: 0.15rem;
 }
 
 .deep-sub li {
-  margin-bottom: .2rem;
+  margin-bottom: 0.2rem;
 }
 
 /* highlight วัน/ตัวเลขสำคัญ */
 .highlight {
   background: #fefcbf;
-  padding: .1rem .3rem;
-  border-radius: .3rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.3rem;
 }
 
 /* กล่อง tip */
 .tip {
-  font-size: .85rem;
-  padding: .5rem .7rem;
-  border-radius: .6rem;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.6rem;
   background: #edf2f7;
   border-left: 3px solid var(--accent);
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 /* =========================================
@@ -272,9 +326,9 @@ main {
 
 details.quiz {
   border-top: 1px dashed var(--border);
-  margin-top: .6rem;
-  padding-top: .5rem;
-  font-size: .9rem;
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  font-size: 0.9rem;
 }
 
 details.quiz summary {
@@ -285,18 +339,18 @@ details.quiz summary {
 
 details.quiz ol {
   padding-left: 1.1rem;
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   margin-bottom: 0;
 }
 
 details.quiz li {
-  margin-bottom: .3rem;
+  margin-bottom: 0.3rem;
 }
 
 .answer {
-  font-size: .85rem;
+  font-size: 0.85rem;
   color: var(--success);
-  margin-top: .2rem;
+  margin-top: 0.2rem;
 }
 
 /* =========================================
@@ -317,30 +371,30 @@ details.quiz li {
   top: 4.1rem;
   align-self: flex-start;
   background: #f8fafc;
-  border-radius: .9rem;
+  border-radius: 0.9rem;
   border: 1px solid var(--border);
-  padding: .8rem .9rem;
+  padding: 0.8rem 0.9rem;
   max-height: calc(100vh - 5rem);
   overflow-y: auto;
 }
 
 .notes-toc-title {
-  font-size: .85rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--muted);
-  margin-bottom: .4rem;
+  margin-bottom: 0.4rem;
 }
 
 .notes-toc-section {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .notes-toc-section-title {
-  font-size: .78rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--accent-strong);
   text-transform: uppercase;
-  margin-bottom: .2rem;
+  margin-bottom: 0.2rem;
 }
 
 /* list + bullet style */
@@ -351,31 +405,34 @@ details.quiz li {
 }
 
 .notes-toc-item {
-  font-size: .8rem;
-  margin-bottom: .15rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.15rem;
 }
 
 /* ลิงก์ TOC เป็น bullet + highlight เบา ๆ */
 .notes-toc-link {
   position: relative;
   display: block;
-  padding: .18rem .5rem .18rem 1.25rem;
-  border-radius: .4rem;
+  padding: 0.18rem 0.5rem 0.18rem 1.25rem;
+  border-radius: 0.4rem;
   text-decoration: none;
   color: var(--muted);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
 }
 
 /* จุด bullet ด้านหน้า */
 .notes-toc-link::before {
   content: "•";
   position: absolute;
-  left: .4rem;
+  left: 0.4rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: .7rem;
+  font-size: 0.7rem;
   color: var(--muted);
 }
 
@@ -407,26 +464,60 @@ details.quiz li {
   min-width: 0;
 }
 
-/* การ์ดแต่ละหัวข้อ */
+/* การ์ดแต่ละหัวข้อ (content ตรงกลางแต่ละบล็อก) */
 
 .note-block {
+  position: relative;
   margin-bottom: 1rem;
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 7rem; /* ให้หัวบล็อกไม่โดน header บัง */
+  border-radius: 1rem;    /* โค้งขึ้นอีกนิดให้ดูเป็นการ์ด */
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+/* เมื่อ section นี้ถูก focus จากการคลิก TOC (#id) */
+.note-block:target {
+  position: relative;
+  border-color: transparent;
+  background: radial-gradient(circle at 0% 0%, #eff6ff, #ffffff);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+/* กรอบสีน้ำเงินนุ่ม ๆ รอบบล็อก */
+.note-block:target::before {
+  content: "";
+  position: absolute;
+  inset: -2px;                               /* ขยายออกเล็กน้อยจากตัวการ์ด */
+  border-radius: inherit;
+  border: 2px solid rgba(37, 99, 235, 0.9); /* น้ำเงินหลัก */
+  box-shadow: 0 0 0 1px rgba(191, 219, 254, 0.9); /* วงแหวนฟ้าอ่อน ๆ */
+  pointer-events: none;
+}
+
+/* เน้น title / focus label ให้ชัดขึ้นเวลาถูกเลือก */
+.note-block:target .note-block-title,
+.note-block:target .note-focus-title {
+  color: var(--accent-strong);
 }
 
 /* header การ์ด note */
+
 .note-block-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: .75rem;
-  margin-bottom: .45rem;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
 }
 
 .note-block-header-main {
   display: flex;
   flex-direction: column;
-  gap: .15rem;
+  gap: 0.15rem;
 }
 
 .note-block-title {
@@ -436,26 +527,28 @@ details.quiz li {
 }
 
 .note-summary {
-  font-size: .88rem;
+  font-size: 0.88rem;
   color: var(--muted);
 }
 
 /* meta ด้านขวา */
+
 .note-block-header-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: .3rem;
+  gap: 0.3rem;
 }
 
 /* pill สั้น */
+
 .note-code-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: .15rem .7rem;
+  padding: 0.15rem 0.7rem;
   border-radius: 999px;
-  font-size: .78rem;
+  font-size: 0.78rem;
   background: #edf2f7;
   color: var(--muted);
   border: 1px solid var(--border);
@@ -467,12 +560,12 @@ details.quiz li {
 
 .notes-error {
   margin-top: 1rem;
-  padding: .75rem .9rem;
-  border-radius: .7rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.7rem;
   border: 1px solid var(--danger);
   background: #fff5f5;
   color: var(--danger);
-  font-size: .86rem;
+  font-size: 0.86rem;
 }
 
 /* =========================================
@@ -486,22 +579,22 @@ details.quiz li {
 .hero-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 .35rem;
+  margin: 0 0 0.35rem;
   color: var(--accent-strong);
 }
 
 .hero-subtitle {
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: var(--muted);
   max-width: 42rem;
 }
 
 /* ปุ่มใน hero หน้า index */
 .hero-actions {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .menu-grid {
@@ -514,15 +607,15 @@ details.quiz li {
 /* menu-card */
 
 .menu-card-title {
-  margin: 0 0 .3rem;
+  margin: 0 0 0.3rem;
   font-size: 1rem;
   color: var(--accent-strong);
 }
 
 .menu-card-desc {
-  font-size: .86rem;
+  font-size: 0.86rem;
   color: var(--muted);
-  margin-bottom: .6rem;
+  margin-bottom: 0.6rem;
 }
 
 .menu-card-footer {
@@ -552,7 +645,7 @@ details.quiz li {
   .notes-toc {
     position: static;
     max-height: none;
-    margin-bottom: .75rem;
+    margin-bottom: 0.75rem;
   }
 
   .note-block-header {
@@ -599,11 +692,11 @@ details.quiz li {
 .index-tag {
   display: inline-flex;
   align-items: center;
-  gap: .35rem;
-  font-size: .72rem;
+  gap: 0.35rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: .08em;
-  padding: .18rem .6rem;
+  letter-spacing: 0.08em;
+  padding: 0.18rem 0.6rem;
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent-strong);
@@ -611,7 +704,7 @@ details.quiz li {
 }
 
 .index-title {
-  margin: .6rem 0 .3rem;
+  margin: 0.6rem 0 0.3rem;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--accent-strong);
@@ -619,7 +712,7 @@ details.quiz li {
 
 .index-subtitle {
   margin: 0;
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: var(--muted);
   max-width: 44rem;
 }
@@ -627,13 +720,13 @@ details.quiz li {
 .index-tabs {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: .35rem;
-  margin-top: .9rem;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
 }
 
 .index-tab {
-  font-size: .78rem;
-  padding: .15rem .7rem;
+  font-size: 0.78rem;
+  padding: 0.15rem 0.7rem;
   border-radius: 999px;
   border: 1px solid transparent;
   background: #f1f5f9;
@@ -664,7 +757,7 @@ details.quiz li {
   background: #f8fafc;
   border-radius: 1rem;
   border: 1px solid var(--border);
-  padding: 1rem 1.1rem .9rem;
+  padding: 1rem 1.1rem 0.9rem;
   display: flex;
   flex-direction: column;
 }
@@ -673,19 +766,19 @@ details.quiz li {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: .5rem;
-  margin-bottom: .4rem;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .index-pane-eyebrow {
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 .index-pane-title {
-  margin: .1rem 0 0;
+  margin: 0.1rem 0 0;
   font-size: 1rem;
   color: var(--accent-strong);
 }
@@ -693,9 +786,9 @@ details.quiz li {
 .index-status-pill {
   display: inline-flex;
   align-items: center;
-  padding: .1rem .55rem;
+  padding: 0.1rem 0.55rem;
   border-radius: 999px;
-  font-size: .72rem;
+  font-size: 0.72rem;
   background: #e2e8f0;
   color: #475569;
 }
@@ -706,19 +799,19 @@ details.quiz li {
 }
 
 .index-pane-text {
-  font-size: .85rem;
+  font-size: 0.85rem;
   color: var(--muted);
-  margin: .35rem 0 .4rem;
+  margin: 0.35rem 0 0.4rem;
 }
 
 .index-pane-list {
-  font-size: .84rem;
+  font-size: 0.84rem;
   padding-left: 1.1rem;
-  margin: 0 0 .55rem;
+  margin: 0 0 0.55rem;
 }
 
 .index-pane-list li {
-  margin-bottom: .1rem;
+  margin-bottom: 0.1rem;
 }
 
 /* footer ของ pane */
@@ -733,24 +826,24 @@ details.quiz li {
 
 .index-card-footer {
   margin-top: 1.1rem;
-  padding-top: .9rem;
+  padding-top: 0.9rem;
   border-top: 1px dashed var(--border);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .index-flow {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--muted);
   margin: 0;
 }
 
 .index-tag-soft {
-  font-size: .75rem;
-  padding: .1rem .55rem;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.55rem;
   border-radius: 999px;
   background: #f1f5f9;
   color: #64748b;
@@ -844,7 +937,7 @@ details.quiz li {
 }
 
 .exam-question-card .deep-list li {
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
 
 /* progress bar หลักด้านบน */
@@ -900,9 +993,9 @@ details.quiz li {
 .exam-sidebar-sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 4.5rem;                      /* เผื่อ header ด้านบน */
+  top: 4.5rem; /* เผื่อ header ด้านบน */
   max-height: calc(100vh - 5.2rem); /* สูงสุดไม่เกินจอ */
-  overflow-y: auto;                 /* ถ้ายาวให้ scroll ภายใน */
+  overflow-y: auto; /* ถ้ายาวให้ scroll ภายใน */
 }
 
 /* ===== แผงข้อสอบแยกตามภาค (sidebar) ===== */
@@ -1012,7 +1105,7 @@ details.quiz li {
 /* กลุ่มปุ่มใน exam-controls (ใช้เป็นปุ่ม hidden ให้ sticky bar เรียกใช้) */
 
 .exam-actions {
-  display: none;           /* ซ่อนปุ่มบนการ์ด */
+  display: none; /* ซ่อนปุ่มบนการ์ด */
   flex-wrap: nowrap;
   gap: 0.3rem;
   align-items: center;
@@ -1020,8 +1113,8 @@ details.quiz li {
 }
 
 .exam-actions .btn {
-  padding: .4rem 1.25rem;
-  font-size: .84rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.84rem;
   border-radius: 999px;
 }
 
@@ -1054,7 +1147,7 @@ details.quiz li {
   /* ยัง sticky เหมือนเดิม แค่ปรับระยะห่างจาก header นิดหน่อย */
   .exam-sidebar-sticky {
     position: sticky;
-    top: 4.5rem; /* จะลอง 4rem / 3.5rem ก็ได้ */
+    top: 4.5rem;
   }
 }
 
@@ -1082,18 +1175,20 @@ details.quiz li {
   right: 1.5rem;
   bottom: 1.5rem;
   z-index: 40;
-  padding: .45rem .9rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: #ffffff;
-  font-size: .78rem;
+  font-size: 0.78rem;
   color: var(--accent-strong);
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15);
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .back-to-top.visible {
@@ -1108,7 +1203,7 @@ details.quiz li {
 }
 
 .back-to-top .icon {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 640px) {
@@ -1180,7 +1275,7 @@ details.quiz li {
   border-radius: 999px;
   font-size: 0.78rem;
   background: #edf2f7;
-  color: #muted;
+  color: var(--muted);
 }
 
 .exam-summary-pill strong {
@@ -1250,6 +1345,12 @@ details.quiz li {
   color: var(--muted);
 }
 
+.exam-summary-section-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
 .exam-summary-section-main strong {
   font-size: 0.95rem;
   color: var(--text);
@@ -1284,7 +1385,7 @@ details.quiz li {
 
   min-width: 3rem;
   height: 3rem;
-  padding: .65rem 1.1rem;
+  padding: 0.65rem 1.1rem;
   border-radius: 999px;
   font-size: 1rem;
 
@@ -1324,8 +1425,8 @@ details.quiz li {
     bottom: 6.1rem;
     min-width: 2.8rem;
     height: 2.8rem;
-    padding: .55rem .9rem;
-    font-size: .9rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.9rem;
   }
 
   .exam-scroll-top-btn .icon {
@@ -1342,7 +1443,7 @@ details.quiz li {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: .4rem 0 .7rem;
+  padding: 0.4rem 0 0.7rem;
   background: linear-gradient(
     to top,
     rgba(226, 232, 240, 0.98),
@@ -1357,8 +1458,8 @@ details.quiz li {
   pointer-events: auto;
 
   transition:
-    transform 0.22s.ease-out,
-    opacity 0.22s.ease-out;
+    transform 0.22s ease-out,
+    opacity 0.22s ease-out;
 }
 
 .exam-sticky-bar.is-visible {
@@ -1374,11 +1475,11 @@ details.quiz li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .75rem;
+  gap: 0.75rem;
 }
 
 .exam-sticky-status {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
@@ -1388,12 +1489,12 @@ details.quiz li {
 .exam-sticky-actions {
   display: flex;
   flex-wrap: nowrap;
-  gap: .35rem;
+  gap: 0.35rem;
 }
 
 .exam-sticky-actions .btn {
-  padding: .4rem 1.3rem;
-  font-size: .82rem;
+  padding: 0.4rem 1.3rem;
+  font-size: 0.82rem;
 }
 
 .exam-sticky-actions #btn-clear-sticky {
@@ -1427,27 +1528,21 @@ details.quiz li {
 }
 
 /* =========================================
-   HOTFIX: บังคับ sidebar ข้อสอบให้ sticky จริง ๆ
-   (ใช้กับหน้า exam-100.html)
+   HOTFIX: sidebar ข้อสอบ sticky จริง ๆ (exam-100.html)
 ========================================= */
 
-/* ให้ row ของ grid สูงตามเนื้อหาแต่ละคอลัมน์ (กัน auto-stretch แปลก ๆ) */
 .exam-layout {
   align-items: flex-start;
 }
 
-/* sticky ทั้งคอลัมน์ขวาแทนการ sticky แค่ card ด้านใน
-   ทำเฉพาะจอที่กว้างกว่า 1040px (2 คอลัมน์) */
 @media (min-width: 1041px) {
   .exam-sidebar-col {
     position: -webkit-sticky;
     position: sticky;
-    top: 7rem; /* เผื่อ header ด้านบนพอดี ๆ */
+    top: 7rem; /* จาก feedback: 7 กำลังสวย */
     align-self: flex-start;
   }
 
-  /* พอให้คอลัมน์ sticky แล้ว การ์ดข้างในไม่ต้อง sticky อีก
-     ปล่อยเป็นกล่องธรรมดา + คุมความสูง/scroll ภายในแทน */
   .exam-sidebar-sticky {
     position: static;
     max-height: calc(100vh - 5.2rem);
@@ -1455,7 +1550,6 @@ details.quiz li {
   }
 }
 
-/* บนจอเล็ก (<1041px) ใช้ layout 1 คอลัมน์เหมือนเดิม ไม่ sticky ทั้งคอลัมน์ */
 @media (max-width: 1040px) {
   .exam-sidebar-col {
     position: static;

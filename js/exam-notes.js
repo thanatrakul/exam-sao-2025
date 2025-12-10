@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loadNotes(tocEl, contentEl);
 });
 
+// ป้องกัน scroll spy แย่ง active ระหว่างที่เรากำลัง scroll จากการคลิก TOC
+let notesIsClickScrolling = false;
+let notesClickScrollTimer = null;
+
 async function loadNotes(tocEl, contentEl) {
   try {
     const res = await fetch("json/exam-notes.json", { cache: "no-cache" });
@@ -23,6 +27,9 @@ async function loadNotes(tocEl, contentEl) {
     renderNotes(contentEl, notes);
     renderToc(tocEl, notes);
     setupScrollSpy(notes);
+
+    // ถ้าเปิดมาพร้อม hash (#note-id) ให้เลื่อนไปที่บล็อกนั้นเลย
+    applyInitialHashState(notes);
   } catch (err) {
     console.error(err);
     contentEl.innerHTML = `
@@ -217,11 +224,34 @@ function renderToc(tocContainer, notes) {
 
       a.addEventListener("click", (evt) => {
         evt.preventDefault();
+
         const target = document.getElementById(note.id);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-          setActiveTocLink(a);
+        if (!target) return;
+
+        // แจ้งว่าเรากำลัง scroll จากการคลิก TOC
+        notesIsClickScrolling = true;
+        if (notesClickScrollTimer) {
+          clearTimeout(notesClickScrollTimer);
         }
+        // ปล่อยให้ scroll spy กลับมาทำงานหลังจากเลื่อนเสร็จสักพัก
+        notesClickScrollTimer = setTimeout(() => {
+          notesIsClickScrolling = false;
+        }, 700); // ให้มากกว่าระยะเวลา scroll smooth หน่อย
+
+        // อัปเดต hash ให้ :target ทำงาน → CSS .note-block:target จะติด
+        if (location.hash !== `#${note.id}`) {
+          if (history.pushState) {
+            history.pushState(null, "", `#${note.id}`);
+          } else {
+            window.location.hash = note.id;
+          }
+        }
+
+        // ใช้ scroll-margin-top ของ .note-block ช่วยกัน header บังหัวบล็อก
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // TOC ด้านซ้ายให้ active ตรงหัวข้อที่คลิก
+        setActiveTocLink(a);
       });
 
       li.appendChild(a);
@@ -264,6 +294,11 @@ function setupScrollSpy(notes) {
 
   const observer = new IntersectionObserver(
     (entries) => {
+      // ถ้ากำลังเลื่อนจากการคลิก TOC → ไม่ต้องให้ scroll spy แทรก active
+      if (notesIsClickScrolling) {
+        return;
+      }
+
       let bestEntry = null;
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
@@ -290,4 +325,31 @@ function setupScrollSpy(notes) {
   );
 
   noteEls.forEach((el) => observer.observe(el));
+}
+
+/**
+ * ถ้ามี hash ตอนโหลดหน้า (#note-id) ให้เลื่อนไปบล็อกนั้น
+ * และ sync active ให้ TOC ทันที
+ */
+function applyInitialHashState(notes) {
+  const hash = window.location.hash || "";
+  if (!hash.startsWith("#")) return;
+
+  const id = hash.slice(1);
+  if (!id) return;
+
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  // เลื่อนให้หัวบล็อกโผล่ (ใช้ scroll-margin-top อยู่แล้ว)
+  target.scrollIntoView({ behavior: "auto", block: "start" });
+
+  if (window.__notesTocLinks) {
+    const link = window.__notesTocLinks.find(
+      (a) => a.dataset.noteId === id
+    );
+    if (link) {
+      setActiveTocLink(link);
+    }
+  }
 }

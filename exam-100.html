@@ -17,15 +17,19 @@
       </p>
     </div>
     <div class="header-actions">
+      <!-- ปุ่มกลับหน้าแรก -->
       <button class="btn btn-ghost" type="button" onclick="window.location.href='index.html'">
         <span class="icon">←</span>
         <span>กลับหน้าหลัก</span>
       </button>
-      <button class="btn" type="button" onclick="window.location.href='exam-notes.html'">
-        <span class="icon">📒</span>
-        <span>เปิดโน้ตรวม</span>
+
+      <!-- ลิงก์ไปข้อสอบ 100 ข้อ -->
+      <button class="btn btn-primary" type="button" onclick="window.location.href='exam-notes.html'">
+        <span class="icon">✔</span>
+        <span>อ่านโน้ตรวม ภาค ก / ข / ค</span>
       </button>
     </div>
+  </div>
   </div>
 </header>
 
@@ -141,7 +145,7 @@
 <!-- Sticky action bar ด้านล่างจอ (แสดงตลอดเวลา) -->
 <div id="exam-sticky-bar" class="exam-sticky-bar" aria-hidden="false">
   <div class="exam-sticky-bar-inner">
-    <div class="exam-sticky-status">
+    <div class="exam-sticky-status" id="exam-sticky-status">
       กำลังทำข้อสอบอยู่ — สามารถกดส่งข้อสอบหรือล้างคำตอบได้ทุกเวลา
     </div>
     <div class="exam-sticky-actions">
